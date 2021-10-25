@@ -14,4 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('docs', function() {
+   $routeCollection = Route::getRoutes();
+
+   $txt = "";
+
+   foreach ($routeCollection->getRoutes() as $route) {
+       $methods = implode('-', $route->methods);
+
+       $txt .= "$methods | $route->uri |<br>";
+   }
+
+   return $txt;
+});
+
 Route::resource('rubrics', \App\Http\Controllers\Api\RubricsController::class);
