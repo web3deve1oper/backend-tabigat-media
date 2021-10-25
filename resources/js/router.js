@@ -9,7 +9,7 @@ import Rubric from "./components/Rubric/Rubric";
 Vue.use(VueRouter);
 
 const router = new VueRouter({
-    mode: 'hash',
+    mode: 'history',
     linkExactActiveClass: 'active',
     routes: [
         {
