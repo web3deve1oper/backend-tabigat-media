@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('',function() {
+   return 'hello';
+});
+
 Route::group(['prefix' => 'admin'], function () {
 
     Route::post('/login', [\App\Http\Controllers\Admin\AuthController::class, 'login']);
