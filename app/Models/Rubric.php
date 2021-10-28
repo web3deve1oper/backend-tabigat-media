@@ -14,12 +14,21 @@ class Rubric extends Model
         'is_red_book',
         'order',
         'is_preferable',
-        'is_visible'
+        'is_visible',
+        'type'
     ];
 
     protected $casts = [
         'is_red_book' => 'boolean',
         'is_preferable' => 'boolean',
         'is_visible' => 'boolean'
+    ];
+
+    const TYPES = [
+        'default-view',
+        'fluid-view',
+        'red-book',
+        'solo-view',
+        'staggered-view'
     ];
 }

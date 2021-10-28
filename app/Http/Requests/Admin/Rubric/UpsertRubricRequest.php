@@ -25,9 +25,7 @@ class UpsertRubricRequest extends FormRequest
     {
         return [
             'rubric.title' => 'string|unique:rubrics,title',
-            'rubric.order' => 'integer|unique:rubrics,order',
-            'rubric.is_preferable' => 'required|boolean',
-            'rubric.is_visible' => 'required|boolean'
+            'rubric.order' => 'integer|unique:rubrics,order'
         ];
     }
 }

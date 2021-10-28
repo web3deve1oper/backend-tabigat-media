@@ -28,5 +28,6 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix' => 'rubrics', 'middleware' => ['auth:sanctum']], function () {
        Route::post('edit-info', [\App\Http\Controllers\Admin\RubricsController::class, 'editInfo']);
        Route::post('upsert', [\App\Http\Controllers\Admin\RubricsController::class, 'upsert']);
+       Route::delete('', [\App\Http\Controllers\Admin\RubricsController::class, 'delete']);
     });
 });

@@ -32,10 +32,11 @@ class RubricFactory extends Factory
         $this->autoIncrement->next();
 
         return [
-            'title' => $this->faker->text('10'),
+            'title' => str_replace('.','',$this->faker->text('10')),
             'is_red_book' => false,
             'is_preferable' => false,
-            'order' => $order
+            'order' => $order,
+            'type' => $this->faker->randomElement(['default-view','fluid-view','red-book','solo-view','staggered-view'])
         ];
     }
 

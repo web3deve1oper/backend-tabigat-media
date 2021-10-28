@@ -9,6 +9,14 @@
                 <router-view></router-view>
             </v-container>
         </v-main>
+
+        <v-snackbar
+            v-model="snack"
+            :timeout="3000"
+            :color="snackColor"
+        >
+            {{ snackText }}
+        </v-snackbar>
     </v-app>
 </template>
 
@@ -23,7 +31,23 @@ export default {
         if (!localStorage.getItem('auth-token')) {
             this.$store.commit('setAuth', false)
         }
-    }
+    },
+    computed: {
+        snack: {
+            get() {
+                return this.$store.state.snack
+            },
+            set() {
+                this.$store.commit('closeSnack')
+            }
+        },
+        snackColor() {
+            return this.$store.state.snackColor
+        },
+        snackText() {
+            return this.$store.state.snackText
+        }
+    },
 }
 </script>
 

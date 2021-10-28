@@ -19,7 +19,9 @@
             </template>
             <v-card>
                 <v-card-title>
-                    <span class="text-h5">{{ dialogType === 'create' ? 'Добавить рубрику' : ' Редактировать рубрику' }}</span>
+                    <span class="text-h5">{{
+                            dialogType === 'create' ? 'Добавить рубрику' : ' Редактировать рубрику'
+                        }}</span>
                 </v-card-title>
 
                 <v-card-text>
@@ -62,6 +64,14 @@
                                     label="Отоброжать на платформе"
                                 ></v-checkbox>
                             </v-col>
+                            <v-col cols="12">
+                                <v-select
+                                    v-model="dialogRubric.type"
+                                    :items="rubricTypes"
+                                    label="Вид рубрики"
+                                    single-line
+                                ></v-select>
+                            </v-col>
                         </v-row>
                     </v-container>
                 </v-card-text>
@@ -90,17 +100,25 @@
             loading-text="Загрузка рубрик"
             api-url="/api/rubrics"
             ref="rubrics"
-            parent="rubric"
         >
         </ApiDataTable>
 
-        <v-btn
-            depressed
-            color="success"
-            @click="saveInfo"
-        >
-            Сохранить
-        </v-btn>
+        <v-row justify="space-between" class="mt-1 ml-2 mr-2">
+            <v-btn
+                depressed
+                color="danger"
+                @click="deleteRubrics"
+            >
+                Удалить отмеченные
+            </v-btn>
+            <v-btn
+                depressed
+                color="success"
+                @click="saveInfo"
+            >
+                Сохранить
+            </v-btn>
+        </v-row>
     </div>
 </template>
 
@@ -115,38 +133,52 @@ export default {
     },
     data() {
         return {
+            slots: [
+                {field: 'is_visible', type: 'checkbox'},
+                {field: 'is_preferable', type: 'checkbox'},
+                {field: 'order', type: 'edit-text-field'},
+            ],
+            rubricTypes: ['default-view', 'fluid-view', 'red-book', 'solo-view', 'staggered-view'],
             orderError: null,
             titleError: null,
             dialogType: '',
-            dialogRubric : {is_preferable: false, is_visible:false},
+            dialogRubric: {is_preferable: true, is_visible: true},
             dialog: false,
             headers: [
                 {
                     text: 'ID',
-                    align: 'start',
-                    value: 'id'
+                    value: 'id',
+                    type: 'text'
                 },
                 {
                     text: 'Название',
-                    align: 'start',
-                    value: 'title'
+                    value: 'title',
+                    type: 'edit-text-field'
                 },
                 {
                     text: 'Позиция',
-                    align: 'start',
-                    value: 'order'
+                    value: 'order',
+                    type: 'edit-number-field'
                 },
                 {
                     text: 'Основной',
-                    align: 'center',
                     value: 'is_preferable',
                     sortable: false,
+                    type: 'checkbox'
                 },
                 {
                     text: 'Отоброжать в списке',
-                    align: 'center',
                     value: 'is_visible',
-                    sortable: false
+                    sortable: false,
+                    type: 'checkbox'
+                },
+                {
+                    text: 'Вид',
+                    value: 'type',
+                    sortable: false,
+                    type: 'edit-select-field',
+                    selectLabel: 'Вид',
+                    selectItems: ['default-view', 'fluid-view', 'red-book', 'solo-view', 'staggered-view']
                 }
             ],
             rubrics: null
@@ -155,10 +187,7 @@ export default {
     methods: {
         saveInfo() {
             if (!this.isValidOrders()) {
-                console.log(this.isValidOrders())
-                this.$refs.rubrics.snackColor = 'red';
-                this.$refs.rubrics.snackText = 'Позиции рубик не должны повторятся!'
-                this.$refs.rubrics.snack = true;
+                this.$store.commit('triggerSnack', {text: 'Позиции рубик не должны повторятся!', color: 'red'})
                 return;
             }
 
@@ -166,18 +195,13 @@ export default {
             this.$http.post('/admin/rubrics/edit-info', {
                 rubrics: this.$refs.rubrics.items
             })
-            .then(res => {
-                this.$refs.rubrics.snack = true;
-                this.$refs.rubrics.snackText = 'Успех'
-                this.$refs.rubrics.loading = false;
-
-                this.$refs.rubrics.getDataFromApi()
-            })
-            .catch(err => {
-                this.$refs.rubrics.snack = true;
-                this.$refs.rubrics.snackText = `Ошибка проверьте целостность данных`
-                this.$refs.rubrics.loading = false;
-            })
+                .then(res => {
+                    this.$store.commit('triggerSnack', {text: 'Успех', color: 'green'})
+                    this.$refs.rubrics.getDataFromApi()
+                })
+                .catch(err => {
+                    this.$store.commit('triggerSnack', {text: 'Ошибка', color: 'red'})
+                })
         },
         isValidOrders() {
             let result = this.$refs.rubrics.items.map(a => a.order);
@@ -197,31 +221,41 @@ export default {
             this.$http.post('/admin/rubrics/upsert', {
                 rubric: this.dialogRubric
             }).then(res => {
-                console.log(res)
-                this.$refs.rubrics.snack = true;
-                this.$refs.rubrics.snackText = 'Успех'
-                this.$refs.rubrics.loading = false;
+                this.$store.commit('triggerSnack', {text: 'Успех', color: 'green'})
                 this.closeDialog();
                 this.$refs.rubrics.getDataFromApi();
             })
-            .catch(err => {
-                console.log(err.response);
-                if ('rubric.order' in err.response.data.errors) {
-                    this.orderError = 'Должен быть уникальным';
-                }
+                .catch(err => {
+                    if ('rubric.order' in err.response.data.errors) {
+                        this.orderError = 'Должен быть уникальным';
+                    }
 
-                if ('rubric.title' in err.response.data.errors) {
-                    this.titleError = 'Должен быть уникальным';
-                }
+                    if ('rubric.title' in err.response.data.errors) {
+                        this.titleError = 'Должен быть уникальным';
+                    }
 
-                this.$refs.rubrics.snack = true;
-                this.$refs.rubrics.snackText = err.message;
-                this.$refs.rubrics.loading = false;
-            })
+                    this.$store.commit('triggerSnack', {text: err.message, color: 'red'})
+                    this.$refs.rubrics.loading = false;
+                })
         },
         changeRubricType(type) {
             this.dialogType = type;
             this.dialogRubric = {};
+        },
+        deleteRubrics() {
+            if (this.$refs.rubrics.selected.length === 0) return;
+            this.$refs.rubrics.loading = true;
+            this.$http.delete('/admin/rubrics',{
+                data: {
+                    rubrics: this.$refs.rubrics.selected
+                }
+            })
+            .then(res => {
+                this.$refs.rubrics.loading = false;
+                this.$store.commit('triggerSnack', {text:'Успешно удалено', color: 'success'})
+
+                this.$refs.rubrics.getDataFromApi();
+            })
         }
     }
 }

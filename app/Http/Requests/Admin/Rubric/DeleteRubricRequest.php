@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin\Rubric;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EditRubricInfoRequest extends FormRequest
+class DeleteRubricRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,8 @@ class EditRubricInfoRequest extends FormRequest
     public function rules()
     {
         return [
-            'rubrics' => 'array',
-            'rubrics.*.order' => 'distinct',
-            'rubrics.*.type' => 'required|string',
-            'rubric.*.title' => 'required|string'
+            'rubrics' => 'required|array',
+            'rubrics.*.id' => 'required|integer'
         ];
     }
 }

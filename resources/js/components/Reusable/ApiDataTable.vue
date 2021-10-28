@@ -6,56 +6,83 @@
             :options.sync="options"
             :server-items-length="totalItems"
             :loading="loading"
-            class="elevation-1"
+            show-select
+            v-model="selected"
+            class="elevation-5"
             :loading-text="loadingText"
+            item-key="id"
             :footer-props="{'items-per-page-options': [15, 30, 50, 100]}"
         >
-<!--            @TODO refactor template as props-->
-                <template v-slot:item.is_preferable="{ item }" v-if="parent === 'rubric'">
-                    <v-simple-checkbox
-                        v-model="item.is_preferable"
-                    ></v-simple-checkbox>
-                </template>
-                <template v-slot:item.is_visible="{ item }" v-if="parent === 'rubric'">
-                    <v-simple-checkbox
-                        v-model="item.is_visible"
-                    ></v-simple-checkbox>
-                </template>
-                <template v-slot:item.order="props" v-if="parent === 'rubric'">
-                    <v-edit-dialog
-                        :return-value.sync="props.item.order"
-                    >
-                        {{ props.item.order }}
-                        <template v-slot:input>
-                            <v-text-field
-                                type="number"
-                                v-model="props.item.order"
-                                label="Проставить очередность"
-                                single-line
-                                counter
-                            ></v-text-field>
-                        </template>
-                    </v-edit-dialog>
-                </template>
+            <template v-slot:body="props">
+                <tbody>
+                <tr v-for="it in props.items">
+                    <td>
+                        <v-simple-checkbox
+                            v-model="props.isSelected(it)"
+                            @input="props.select(it,!props.isSelected(it))"
+                        ></v-simple-checkbox>
+                    </td>
+                    <td v-for="header in headers">
+                        <v-simple-checkbox
+                            v-if="header.type==='checkbox'"
+                            v-model="it[header.value]"
+                        ></v-simple-checkbox>
+                        <v-edit-dialog
+                            v-if="header.type==='edit-number-field'"
+                            :return-value.sync="it[header.value]"
+                        >
+                            {{ it[header.value] }}
+                            <template v-slot:input>
+                                <v-text-field
+                                    type="number"
+                                    v-model="it[header.value]"
+                                    label="Проставить очередность"
+                                    single-line
+                                    counter
+                                ></v-text-field>
+                            </template>
+                        </v-edit-dialog>
 
-        </v-data-table>
-        <v-snackbar
-            v-model="snack"
-            :timeout="3000"
-            color="primary"
-        >
-            {{ snackText }}
+                        <v-edit-dialog
+                            v-if="header.type==='edit-text-field'"
+                            :return-value.sync="it[header.value]"
+                        >
+                            {{ it[header.value] }}
+                            <template v-slot:input>
+                                <v-text-field
+                                    v-model="it[header.value]"
+                                    label="Новое название"
+                                ></v-text-field>
+                            </template>
+                        </v-edit-dialog>
 
-            <template v-slot:action="{ attrs }">
-                <v-btn
-                    v-bind="attrs"
-                    text
-                    @click="snack = false"
-                >
-                    Закрыть
-                </v-btn>
+                        <v-edit-dialog
+                            v-if="header.type==='edit-select-field'"
+                            :return-value.sync="it[header.value]"
+                            large
+                            save-text="Сохранить"
+                            cancel-text="Отмена"
+                        >
+                            {{ it[header.value] }}
+                            <template v-slot:input>
+                                <v-select
+                                    v-model="it[header.value]"
+                                    :items="header.selectItems"
+                                    :label="header.selectLabel"
+                                    single-line
+                                    return-object
+                                ></v-select>
+                            </template>
+                        </v-edit-dialog>
+
+                        <span v-if="header.type==='text'">
+                        {{ it[header.value] }}
+                    </span>
+                    </td>
+                </tr>
+                </tbody>
             </template>
-        </v-snackbar>
+        </v-data-table>
     </div>
 </template>
 
@@ -65,8 +92,7 @@ export default {
     props: {
         headers: Array,
         loadingText: String,
-        apiUrl: String,
-        parent: String
+        apiUrl: String
     },
     data() {
         return {
@@ -77,7 +103,8 @@ export default {
             items: [],
             options: {},
             totalItems: 0,
-            parentName: ''
+            parentName: '',
+            selected: []
         }
     },
     watch: {
@@ -90,11 +117,9 @@ export default {
     },
     methods: {
         getDataFromApi() {
-            console.log(this.options)
             this.loading = true;
             this.apiCall()
                 .then(res => {
-                    console.log(res)
                     this.loading = false;
                     this.items = res.data.data.data;
                     this.totalItems = res.data.data.total;
@@ -110,7 +135,7 @@ export default {
                     itemsPerPage
                 }
             });
-        }
+        },
     }
 }
 </script>

@@ -38,10 +38,6 @@ export default {
     methods: {
         validate() {
             if (this.$refs.loginForm.validate()) {
-                console.log(this.loginEmail)
-                console.log(this.loginPassword)
-                console.log(this.csrf)
-
                 this.$http.post('/admin/login', {
                     email : this.loginEmail,
                     password: this.loginPassword,
@@ -50,6 +46,7 @@ export default {
                     localStorage.setItem('auth-token', res.data.data.token)
                     this.$store.commit('setAuth', true)
                     this.$router.push('/admin/about')
+                    this.$store.commit('triggerSnack', {text:'Авторизовано',color:'green'})
                 })
             }
         },

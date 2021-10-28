@@ -16,10 +16,10 @@ class CreateRubricsTable extends Migration
         Schema::create('rubrics', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->boolean('is_red_book')->default(false);
             $table->boolean('is_preferable')->default(false);
             $table->boolean('is_visible')->default(true);
             $table->integer('order')->nullable();
+            $table->string('type')->default('default-view');
             $table->timestamps();
         });
     }

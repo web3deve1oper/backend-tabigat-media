@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Rubric\DeleteRubricRequest;
 use App\Http\Requests\Admin\Rubric\EditRubricInfoRequest;
 use App\Http\Requests\Admin\Rubric\UpsertRubricRequest;
 use App\Models\Rubric;
@@ -19,7 +20,9 @@ class RubricsController extends Controller
                 ->update([
                     'order' => $rubric['order'],
                     'is_visible' => $rubric['is_visible'],
-                    'is_preferable' => $rubric['is_preferable']
+                    'is_preferable' => $rubric['is_preferable'],
+                    'type' => $rubric['type'],
+                    'title' => $rubric['title']
                 ]);
         }
 
@@ -36,5 +39,14 @@ class RubricsController extends Controller
         );
 
         return $this->apiResponse($rubric);
+    }
+
+    public function delete(DeleteRubricRequest $request)
+    {
+        $rubrics = $request->rubrics;
+
+        Rubric::destroy(array_column($rubrics,'id'));
+
+        return $this->apiResponse(null);
     }
 }

@@ -7,7 +7,10 @@ export default new Vuex.Store({
     state: {
         count: 1,
         isAuth: true,
-        headerText: ''
+        headerText: '',
+        snack: null,
+        snackColor: 'green',
+        snackText: '',
     },
     mutations: {
         increment(state, payload) {
@@ -18,6 +21,14 @@ export default new Vuex.Store({
         },
         changeHeaderText(state, text) {
             state.headerText = text;
+        },
+        triggerSnack(state,attrs) {
+            state.snack = true;
+            state.snackColor = attrs.color;
+            state.snackText = attrs.text;
+        },
+        closeSnack(state, attrs) {
+            state.snack = null;
         }
     },
     actions: {
