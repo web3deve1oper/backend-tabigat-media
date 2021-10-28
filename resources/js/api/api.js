@@ -7,7 +7,7 @@ import store from '../store';
 import router from '../router';
 
 let instance = axios.create({
-    baseURL : DEV
+    baseURL : remoteDEV
 });
 
 instance.interceptors.response.use(function (response) {
