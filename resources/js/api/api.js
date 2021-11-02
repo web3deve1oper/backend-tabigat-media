@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const DEV = 'http://tabigat-media.test/';
-const remoteDEV = 'http://sleepy-lowlands-53073.herokuapp.com/';
+const remoteDEV = 'http://78.40.109.52/';
 
 import store from '../store';
 import router from '../router';
