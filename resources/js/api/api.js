@@ -6,9 +6,15 @@ const remoteDEV = 'http://sleepy-lowlands-53073.herokuapp.com/';
 import store from '../store';
 import router from '../router';
 
+/*
+ @TODO change before deploying
+*/
 let instance = axios.create({
     baseURL : remoteDEV
 });
+
+instance.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+instance.defaults.withCredentials = true;
 
 instance.interceptors.response.use(function (response) {
     return response;

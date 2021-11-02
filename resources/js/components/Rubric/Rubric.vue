@@ -100,6 +100,7 @@
             loading-text="Загрузка рубрик"
             api-url="/api/rubrics"
             ref="rubrics"
+            :api-includes="apiIncludes"
         >
         </ApiDataTable>
 
@@ -156,6 +157,11 @@ export default {
                     type: 'edit-text-field'
                 },
                 {
+                  text: 'Количество статей',
+                  value: 'articles_count',
+                  type: 'text'
+                },
+                {
                     text: 'Позиция',
                     value: 'order',
                     type: 'edit-number-field'
@@ -181,7 +187,8 @@ export default {
                     selectItems: ['default-view', 'fluid-view', 'red-book', 'solo-view', 'staggered-view']
                 }
             ],
-            rubrics: null
+            rubrics: null,
+            apiIncludes: 'articlesCount'
         }
     },
     methods: {
@@ -192,7 +199,7 @@ export default {
             }
 
             this.$refs.rubrics.loading = true;
-            this.$http.post('/admin/rubrics/edit-info', {
+            this.$http.post('/api/rubrics/edit-info', {
                 rubrics: this.$refs.rubrics.items
             })
                 .then(res => {
@@ -218,7 +225,7 @@ export default {
             this.titleError = null;
             this.orderError = null;
             this.$refs.rubrics.loading = true;
-            this.$http.post('/admin/rubrics/upsert', {
+            this.$http.post('/api/rubrics/upsert', {
                 rubric: this.dialogRubric
             }).then(res => {
                 this.$store.commit('triggerSnack', {text: 'Успех', color: 'green'})
@@ -245,7 +252,7 @@ export default {
         deleteRubrics() {
             if (this.$refs.rubrics.selected.length === 0) return;
             this.$refs.rubrics.loading = true;
-            this.$http.delete('/admin/rubrics',{
+            this.$http.delete('/api/rubrics',{
                 data: {
                     rubrics: this.$refs.rubrics.selected
                 }

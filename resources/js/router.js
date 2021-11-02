@@ -5,6 +5,9 @@ import About from './components/About';
 import auth from './middleware/auth';
 import Login from "./components/Login";
 import Rubric from "./components/Rubric/Rubric";
+import Articles from "./components/Article/Articles";
+import CreateArticle from "./components/Article/CreateArticle";
+import UpdateArticle from "./components/Article/UpdateArticle";
 
 Vue.use(VueRouter);
 
@@ -32,6 +35,30 @@ const router = new VueRouter({
             path: '/admin/login',
             name: 'login',
             component: Login
+        },
+        {
+            path: '/admin/articles',
+            name: 'articles',
+            component: Articles,
+            meta: {
+                middleware: [auth]
+            }
+        },
+        {
+            path: '/admin/articles-create',
+            name: 'create-article',
+            component: CreateArticle,
+            meta: {
+                middleware: [auth]
+            }
+        },
+        {
+            path: '/admin/articles/:id',
+            name: 'update-article',
+            component: UpdateArticle,
+            meta: {
+                middleware: [auth]
+            }
         }
     ]
 });

@@ -31,4 +31,9 @@ class Rubric extends Model
         'solo-view',
         'staggered-view'
     ];
+
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
 }

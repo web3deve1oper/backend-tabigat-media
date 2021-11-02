@@ -10,7 +10,7 @@ export default new Vuex.Store({
         headerText: '',
         snack: null,
         snackColor: 'green',
-        snackText: '',
+        snackText: ''
     },
     mutations: {
         increment(state, payload) {
@@ -29,6 +29,9 @@ export default new Vuex.Store({
         },
         closeSnack(state, attrs) {
             state.snack = null;
+        },
+        refreshCsrf(state, attrs) {
+            state.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }
     },
     actions: {

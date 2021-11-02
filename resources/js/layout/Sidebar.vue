@@ -42,6 +42,7 @@ export default {
             items: [
                 {title: 'Главная', icon: 'mdi-image', route:'about'},
                 {title: 'Рубрики', icon: 'mdi-help-box', route: 'rubrics'},
+                {title: 'Статьи', icon:'mdi-book-open-variant', route: 'articles'}
             ]
         }
     },

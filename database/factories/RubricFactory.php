@@ -33,7 +33,6 @@ class RubricFactory extends Factory
 
         return [
             'title' => str_replace('.','',$this->faker->text('10')),
-            'is_red_book' => false,
             'is_preferable' => false,
             'order' => $order,
             'type' => $this->faker->randomElement(['default-view','fluid-view','red-book','solo-view','staggered-view'])

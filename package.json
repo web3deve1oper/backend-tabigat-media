@@ -29,7 +29,9 @@
     "dependencies": {
         "@mdi/font": "^6.3.95",
         "vue-axios": "^3.3.7",
+        "vue-cropperjs": "^3.0.0",
         "vue-router": "^3.5.2",
+        "vue2-editor": "^2.10.3",
         "vuetify": "^2.5.10",
         "vuetify-loader": "^1.7.3",
         "vuex": "^3.6.2"

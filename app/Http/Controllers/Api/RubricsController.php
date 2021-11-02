@@ -19,6 +19,9 @@ class RubricsController extends Controller
         $rubrics = QueryBuilder::for(Rubric::class)
             ->defaultSort('id')
             ->allowedSorts('id','title','order')
+            ->allowedIncludes([
+                'articles',
+            ])
             ->paginate(request('itemsPerPage'));
 
         return $this->apiResponse($rubrics);

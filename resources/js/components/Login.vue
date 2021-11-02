@@ -1,17 +1,17 @@
 <template>
-    <v-row justify="center" align-content="center" class="mt-lg-5">
-        <v-card class="px-4" max-width="600" color="#DCDCDC">
+    <v-row justify="center" align-content="center" class="mt-10">
+        <v-card class="px-4" max-width="600" color="white">
             <v-card-text>
                 <v-form ref="loginForm" v-model="valid" lazy-validation>
                     <v-row>
                         <v-col cols="12">
                             <v-text-field v-model="loginEmail" :rules="loginEmailRules" label="E-mail"
-                                          required autocomplete="false"></v-text-field>
+                                          required autocomplete="new-email"></v-text-field>
                         </v-col>
                         <v-col cols="12">
                             <v-text-field v-model="loginPassword" :append-icon="show1?'eye':'eye-off'"
                                           :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'"
-                                          name="input-10-1" label="Password" hint="At least 8 characters" counter
+                                          name="input-10-1" label="Пароль" hint="Введите пароль" counter
                                           @click:append="show1 = !show1" autocomplete="false"></v-text-field>
                         </v-col>
                         <v-col class="d-flex" cols="12" sm="6" xsm="12">
@@ -38,15 +38,16 @@ export default {
     methods: {
         validate() {
             if (this.$refs.loginForm.validate()) {
-                this.$http.post('/admin/login', {
-                    email : this.loginEmail,
-                    password: this.loginPassword,
-                    _token: this.csrf
-                }).then(res => {
-                    localStorage.setItem('auth-token', res.data.data.token)
-                    this.$store.commit('setAuth', true)
-                    this.$router.push('/admin/about')
-                    this.$store.commit('triggerSnack', {text:'Авторизовано',color:'green'})
+                this.$http.get('/sanctum/csrf-cookie').then(res => {
+                    this.$http.post('/api/admin-login', {
+                        email: this.loginEmail,
+                        password: this.loginPassword
+                    }).then(res => {
+                        localStorage.setItem('auth-token', res.data.data.token)
+                        this.$store.commit('setAuth', true)
+                        this.$router.push('/admin/about')
+                        this.$store.commit('triggerSnack', {text: 'Авторизовано', color: 'green'})
+                    })
                 })
             }
         },
@@ -74,18 +75,18 @@ export default {
         loginPassword: "",
         loginEmail: "",
         loginEmailRules: [
-            v => !!v || "Required",
-            v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+            v => !!v || "Обязательное поле",
+            v => /.+@.+\..+/.test(v) || "Неверный формат"
         ],
         emailRules: [
-            v => !!v || "Required",
+            v => !!v || "Обязательное поле",
             v => /.+@.+\..+/.test(v) || "E-mail must be valid"
         ],
 
         show1: false,
         rules: {
-            required: value => !!value || "Required.",
-            min: v => (v && v.length >= 3) || "Min 8 characters"
+            required: value => !!value || "Обязательное поле",
+            min: v => (v && v.length >= 3) || "Минимум 3 символа"
         }
     })
 }

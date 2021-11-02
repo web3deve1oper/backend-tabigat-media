@@ -19,15 +19,7 @@ Route::get('',function() {
 
 Route::group(['prefix' => 'admin'], function () {
 
-    Route::post('/login', [\App\Http\Controllers\Admin\AuthController::class, 'login']);
-
-    Route::get('/{any?}', function () {
+    Route::get('{any}', function () {
         return view('welcome');
-    });
-
-    Route::group(['prefix' => 'rubrics', 'middleware' => ['auth:sanctum']], function () {
-       Route::post('edit-info', [\App\Http\Controllers\Admin\RubricsController::class, 'editInfo']);
-       Route::post('upsert', [\App\Http\Controllers\Admin\RubricsController::class, 'upsert']);
-       Route::delete('', [\App\Http\Controllers\Admin\RubricsController::class, 'delete']);
-    });
+    })->where('any', '(.*)');
 });

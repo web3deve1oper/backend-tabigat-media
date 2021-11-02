@@ -76,7 +76,7 @@
                         </v-edit-dialog>
 
                         <span v-if="header.type==='text'">
-                        {{ it[header.value] }}
+                        {{ txt(it, header.value) }}
                     </span>
                     </td>
                 </tr>
@@ -92,7 +92,8 @@ export default {
     props: {
         headers: Array,
         loadingText: String,
-        apiUrl: String
+        apiUrl: String,
+        apiIncludes: String
     },
     data() {
         return {
@@ -116,26 +117,31 @@ export default {
         }
     },
     methods: {
-        getDataFromApi() {
+        getDataFromApi(search) {
             this.loading = true;
-            this.apiCall()
+            this.apiCall(search)
                 .then(res => {
                     this.loading = false;
                     this.items = res.data.data.data;
                     this.totalItems = res.data.data.total;
                 })
         },
-        apiCall() {
+        apiCall(search) {
             const {sortBy, sortDesc, page, itemsPerPage} = this.options
             return this.$http.get(this.apiUrl, {
                 params: {
                     sort: sortBy[0] ? `${sortDesc[0] ? '-' : ''}${sortBy[0]}` : 'id',
                     sortDesc,
                     page,
-                    itemsPerPage
+                    itemsPerPage,
+                    include: this.apiIncludes,
+                    'filter[search]': search
                 }
             });
         },
+        txt(obj, key) {
+            return _.get(obj ,key);
+        }
     }
 }
 </script>

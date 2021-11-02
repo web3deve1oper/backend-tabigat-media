@@ -14,18 +14,40 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('docs', function() {
-   $routeCollection = Route::getRoutes();
+Route::get('docs', function () {
+    $routeCollection = Route::getRoutes();
 
-   $txt = "";
+    $txt = "";
 
-   foreach ($routeCollection->getRoutes() as $route) {
-       $methods = implode('-', $route->methods);
+    foreach ($routeCollection->getRoutes() as $route) {
+        $methods = implode('-', $route->methods);
 
-       $txt .= "$methods | $route->uri |<br>";
-   }
+        $txt .= "$methods | $route->uri |<br>";
+    }
 
-   return $txt;
+    return $txt;
 });
 
-Route::resource('rubrics', \App\Http\Controllers\Api\RubricsController::class);
+
+Route::post('admin-login', [\App\Http\Controllers\AuthController::class, 'adminLogin']);
+
+Route::get('rubrics', [\App\Http\Controllers\Api\RubricsController::class, 'index']);
+Route::get('authors', [\App\Http\Controllers\Api\AuthorsController::class, 'index']);
+
+Route::group(['prefix' => 'articles'], function () {
+    Route::get('', [\App\Http\Controllers\Api\ArticlesController::class, 'index']);
+    Route::get('{article}/edit', [\App\Http\Controllers\Api\ArticlesController::class, 'edit']);
+
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+        Route::post('upload-temp-image', [\App\Http\Controllers\Admin\ArticleController::class, 'uploadTempImage']);
+        Route::post('create', [\App\Http\Controllers\Admin\ArticleController::class, 'create']);
+        Route::post('{article}/update', [\App\Http\Controllers\Admin\ArticleController::class, 'update']);
+        Route::delete('', [\App\Http\Controllers\Admin\ArticleController::class, 'delete']);
+    });
+});
+
+Route::group(['prefix' => 'rubrics', 'middleware' => ['auth:sanctum', 'scopes:admin-actions']], function () {
+    Route::post('edit-info', [\App\Http\Controllers\Admin\RubricsController::class, 'editInfo']);
+    Route::post('upsert', [\App\Http\Controllers\Admin\RubricsController::class, 'upsert']);
+    Route::delete('', [\App\Http\Controllers\Admin\RubricsController::class, 'delete']);
+});
