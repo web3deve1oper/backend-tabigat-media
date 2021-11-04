@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Rubric;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class RubricsController extends Controller
@@ -22,7 +23,10 @@ class RubricsController extends Controller
             ->allowedIncludes([
                 'articles',
             ])
-            ->allowedFilters(['order', 'id'])
+            ->allowedFilters([
+                AllowedFilter::exact('order'),
+                AllowedFilter::exact('id')
+            ])
             ->paginate(request('itemsPerPage'));
 
         return $this->apiResponse($rubrics);
