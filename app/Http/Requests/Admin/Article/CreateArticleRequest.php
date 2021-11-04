@@ -24,7 +24,7 @@ class CreateArticleRequest extends FormRequest
     public function rules()
     {
         return [
-            'preview_image' => 'image',
+            'preview_image' => 'required|image',
             'id' => 'exists:articles,id',
             'title' => 'required',
             'description' => 'required'

@@ -22,6 +22,7 @@ class RubricsController extends Controller
             ->allowedIncludes([
                 'articles',
             ])
+            ->allowedFilters(['order', 'id'])
             ->paginate(request('itemsPerPage'));
 
         return $this->apiResponse($rubrics);

@@ -259,7 +259,7 @@ export default {
             var formData = new FormData();
 
             this.buildFormData(formData, this.article)
-            if (this.$refs.cropper.croppedBlob) {
+            if (this.$refs.cropper && this.$refs.cropper.croppedBlob) {
                 formData.append('preview_image', this.$refs.cropper.croppedBlob)
             }
 

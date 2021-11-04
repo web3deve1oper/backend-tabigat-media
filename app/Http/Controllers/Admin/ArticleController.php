@@ -25,7 +25,7 @@ class ArticleController extends Controller
     {
         $article = $request->all();
 
-        if ($article['preview_image']) {
+        if (isset($article['preview_image'])) {
             $file = $request->file('preview_image');
             $image = Storage::disk('public')->put("/article_preview/", $file);
             $article['preview_image_url'] = Storage::disk('public')->url($image);
