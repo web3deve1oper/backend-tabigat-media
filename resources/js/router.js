@@ -15,7 +15,7 @@ import Authors from "./components/Author/Authors";
 import PageNotFound from "./components/PageNotFound";
 import CreateAuthor from "./components/Author/CreateAuthor";
 import UpdateAuthor from "./components/Author/UpdateAuthor";
-import FavouriteArticles from "./FavouriteArticles";
+import FavouriteArticles from "./components/Article/FavouriteArticles";
 
 Vue.use(VueRouter);
 

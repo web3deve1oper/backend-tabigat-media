@@ -35,7 +35,7 @@
                     </v-card-actions>
                 </v-card>
             </v-col>
-            <v-col cols="4" class="mr-auto" v-show="favourites.length < 3">
+            <v-col cols="4" class="mr-auto" v-show="favourites.length < 3 && !loading">
                 <v-card
                     class="mx-auto"
                     width="400"
@@ -49,7 +49,7 @@
                     >
                         <template v-slot:activator="{ on, attrs }">
                             <v-row class="ml-auto mt-auto mb-auto">
-                                <v-icon v-bind="attrs" v-on="on" size="350px" color="#E3DDDC">mdi-plus</v-icon>
+                                <v-icon dense v-bind="attrs" v-on="on" size="350px" color="#E3DDDC">mdi-plus</v-icon>
                             </v-row>
                         </template>
                         <v-card>
@@ -106,11 +106,13 @@ export default {
         },
         getFavourites() {
             this.loading = true;
-            this.$http.get('/api/articles?filter[favourite]=1&include=author')
-                .then(res => {
-                    this.loading = false;
-                    this.favourites = res.data.data.data;
-                })
+            this.sleep(2000).then(res => {
+                this.$http.get('/api/articles?filter[favourite]=1&include=author')
+                    .then(res => {
+                        this.loading = false;
+                        this.favourites = res.data.data.data;
+                    })
+            })
         },
         favouriteSelected() {
             this.dialog = false;
@@ -137,6 +139,9 @@ export default {
                 .catch(res => {
                     this.$store.commit('triggerSnack', {text: 'Ошибка', color: 'red'})
                 })
+        },
+        sleep(time) {
+            return new Promise((resolve) => setTimeout(resolve, time));
         }
     }
 }
