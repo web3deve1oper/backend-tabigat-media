@@ -26,7 +26,7 @@ class ArticleController extends Controller
     {
         $article = $request->all();
 
-        $tags = Tag::createOrReturnIds($article['tags']);
+        $tags = Tag::createOrReturnIds($article['tags'] ?? []);
 
         if (isset($article['preview_image'])) {
             $file = $request->file('preview_image');
@@ -60,7 +60,7 @@ class ArticleController extends Controller
     {
         $art = $request->all();
 
-        $tags = Tag::createOrReturnIds($art['tags']);
+        $tags = Tag::createOrReturnIds($art['tags'] ?? []);
 
         if (isset($art['preview_image'])) {
             $file = $request->file('preview_image');
