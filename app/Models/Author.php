@@ -29,7 +29,7 @@ class Author extends Model
     public function scopeGlobalSearch(Builder $query, $search)
     {
         return $query->where('id', $search)
-            ->orWhere('full_name', 'LIKE', "%$search$%")
+            ->orWhere('full_name', 'LIKE', "%$search%")
             ->orWhere('biography', 'LIKE', "%$search%");
     }
 }
