@@ -24,10 +24,12 @@ class UpdateRedBookRequest extends FormRequest
     public function rules()
     {
         return [
-            'preview_image' => 'image',
+            'preview_image_big' => 'required|image',
+            'preview_image_small' => 'required|image',
             'id' => 'required|exists:articles,id',
             'name' => 'required',
-            'name_latin' => 'required'
+            'name_latin' => 'required',
+            'slug' => 'required'
         ];
     }
 }

@@ -15,7 +15,8 @@ class Rubric extends Model
         'order',
         'is_preferable',
         'is_visible',
-        'type'
+        'type',
+        'description'
     ];
 
     protected $casts = [

@@ -22,12 +22,13 @@ class CreateArticlesTable extends Migration
             $table->string('description');
             $table->text('content')->nullable();
             $table->boolean('is_long_read')->default(false);
-            $table->date('posted_at')->nullable();
+            $table->timestamp('posted_at')->nullable();
             $table->string('read_time')->nullable();
             $table->string('photography')->nullable();
             $table->integer('views')->default(0);
             $table->json('staff')->nullable();
-            $table->text('preview_image_url')->nullable();
+            $table->text('preview_image_big_url')->nullable();
+            $table->text('preview_image_small_url')->nullable();
             $table->timestamps();
 
             $table->foreign('author_id')

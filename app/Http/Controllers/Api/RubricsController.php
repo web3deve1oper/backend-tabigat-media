@@ -34,7 +34,13 @@ class RubricsController extends Controller
             ])
             ->allowedFilters([
                 AllowedFilter::exact('order'),
-                AllowedFilter::exact('id')
+                AllowedFilter::exact('id'),
+                AllowedFilter::callback('preferable', function ($q) {
+                    $q->where('is_preferable', true);
+                }),
+                AllowedFilter::callback('visible', function ($q) {
+                    $q->where('is_visible', true);
+                })
             ])
             ->paginate(request('itemsPerPage'));
 

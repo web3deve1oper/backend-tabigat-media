@@ -21,7 +21,8 @@ class RubricsController extends Controller
                     'order' => $rubric['order'],
                     'is_visible' => $rubric['is_visible'],
                     'is_preferable' => $rubric['is_preferable'],
-                    'title' => $rubric['title']
+                    'title' => $rubric['title'],
+                    'description' => $rubric['description']
                 ]);
         }
 

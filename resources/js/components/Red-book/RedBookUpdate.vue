@@ -33,166 +33,208 @@
         </v-toolbar>
 
         <v-tabs-items v-model="tab" class="mt-5">
-            <v-tab-item>
-                <v-card flat max-width="700px" max-height="2000px" class="ml-auto mr-auto mt-5 mb-10">
-                    <v-row>
-                        <v-text-field
-                            v-model="specie.name"
-                            label="Название"
-                            :rules="notEmptyRule"
-                            counter="255"
-                            clearable
-                        ></v-text-field>
-                    </v-row>
-                    <v-row>
-                        <v-text-field
-                            v-model="specie.name_latin"
-                            counter="255"
-                            :rules="notEmptyRule"
-                            label="Латинское название"
-                            clearable
-                        ></v-text-field>
-                    </v-row>
-                    <v-row>
-                        <v-text-field
-                            v-model="specie.domain"
-                            counter="255"
-                            label="Домен"
-                            clearable
-                        ></v-text-field>
-                    </v-row>
-                    <v-row>
-                        <v-text-field
-                            v-model="specie.type"
-                            label="Тип"
-                            counter="255"
-                            clearable
-                        ></v-text-field>
-                    </v-row>
-                    <v-row>
-                        <v-text-field
-                            v-model="specie.class"
-                            label="Класс"
-                            counter="255"
-                            clearable
-                        ></v-text-field>
-                    </v-row>
-                    <v-row>
-                        <v-text-field
-                            v-model="specie.squad"
-                            label="Отряд"
-                            counter="255"
-                            clearable
-                        ></v-text-field>
-                    </v-row>
-                    <v-row>
-                        <v-text-field
-                            v-model="specie.family"
-                            label="Семейство"
-                            clearable
-                            counter="255"
-                        ></v-text-field>
-                    </v-row>
-                    <v-row>
-                        <v-text-field
-                            v-model="specie.genus"
-                            label="Род"
-                            counter="255"
-                            clearable
-                        ></v-text-field>
-                    </v-row>
-                    <v-row>
-                        <v-text-field
-                            v-model="specie.kind"
-                            label="Вид"
-                            counter="255"
-                            clearable
-                        ></v-text-field>
-                    </v-row>
-                </v-card>
-            </v-tab-item>
-            <v-tab-item>
-                <v-card flat max-width="900px" height="2000px" class="ml-auto mr-auto mt-5">
-                    <v-row class="d-flex flex-column">
-                        <v-banner class="mt-5 mb-2">Интересные факты
-                            <v-btn small class="ml-10" @click="addFact">Добавить еще</v-btn>
-                        </v-banner>
-                        <v-simple-table dense>
-                            <template v-slot:default>
-                                <thead>
-                                <tr>
-                                    <th class="text-left">
-                                        Описание факта
-                                    </th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr
-                                    v-for="(st,index) in specie.facts"
-                                    :key="index + 'st'"
-                                >
-                                    <td>
-                                        <v-text-field single-line v-model="specie.facts[index]" :rules="notEmptyRule"
-                                                      placeholder="Впишите описание"></v-text-field>
-                                    </td>
-                                    <td>
-                                        <v-btn color="red" x-small depressed @click="removeFact(index)">
-                                            X
-                                        </v-btn>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </template>
-                        </v-simple-table>
-                    </v-row>
-                    <v-row class="d-flex flex-column">
-                        <v-banner class="mt-5 mb-2">Статус
-                            <v-btn small class="ml-10" @click="addStatus">Добавить еще</v-btn>
-                        </v-banner>
-                        <v-simple-table dense>
-                            <template v-slot:default>
-                                <thead>
-                                <tr>
-                                    <th class="text-left">
-                                        Описание статуса
-                                    </th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr
-                                    v-for="(st,index) in specie.status"
-                                    :key="index + 'tt'"
-                                >
-                                    <td>
-                                        <v-text-field single-line v-model="specie.status[index]" :rules="notEmptyRule"
-                                                      placeholder="Впишите описание"></v-text-field>
-                                    </td>
-                                    <td>
-                                        <v-btn color="red" x-small depressed @click="removeStatus(index)">
-                                            X
-                                        </v-btn>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </template>
-                        </v-simple-table>
-                    </v-row>
-                </v-card>
-            </v-tab-item>
-            <v-tab-item>
-                <crop-image ref="cropper" :value="specie.preview_image_url"/>
-            </v-tab-item>
-            <v-tab-item>
-                <v-card>
-                    <vue-editor v-model="specie.content"
-                                useCustomImageHandler
-                                @image-added="handleImageAdded"
-                                id="contentEditor"
-                    ></vue-editor>
-                </v-card>
-            </v-tab-item>
+            <v-form ref="form"
+                    v-model="validForm"
+                    lazy-validation>
+                <v-tab-item>
+                    <v-card flat max-width="700px" max-height="2000px" class="ml-auto mr-auto mt-5 mb-10">
+                        <v-row>
+                            <v-text-field
+                                v-model="specie.name"
+                                label="Название"
+                                :rules="notEmptyRule"
+                                counter="255"
+                                clearable
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                v-model="specie.name_latin"
+                                counter="255"
+                                :rules="notEmptyRule"
+                                label="Латинское название"
+                                clearable
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                v-model="specie.description"
+                                counter="255"
+                                label="Описание"
+                                clearable
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                v-model="specie.slug"
+                                label="Слаг"
+                                :rules="notEmptyRule"
+                                counter="255"
+                                clearable
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                v-model="specie.domain"
+                                counter="255"
+                                label="Домен"
+                                clearable
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                v-model="specie.type"
+                                label="Тип"
+                                counter="255"
+                                clearable
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                v-model="specie.class"
+                                label="Класс"
+                                counter="255"
+                                clearable
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                v-model="specie.squad"
+                                label="Отряд"
+                                counter="255"
+                                clearable
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                v-model="specie.family"
+                                label="Семейство"
+                                clearable
+                                counter="255"
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                v-model="specie.genus"
+                                label="Род"
+                                counter="255"
+                                clearable
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                v-model="specie.kind"
+                                label="Вид"
+                                counter="255"
+                                clearable
+                            ></v-text-field>
+                        </v-row>
+                    </v-card>
+                </v-tab-item>
+                <v-tab-item>
+                    <v-card flat max-width="900px" height="2000px" class="ml-auto mr-auto mt-5">
+                        <v-row class="d-flex flex-column">
+                            <v-banner class="mt-5 mb-2">Интересные факты
+                                <v-btn small class="ml-10" @click="addFact">Добавить еще</v-btn>
+                            </v-banner>
+                            <v-simple-table dense>
+                                <template v-slot:default>
+                                    <thead>
+                                    <tr>
+                                        <th class="text-left">
+                                            Описание факта
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr
+                                        v-for="(st,index) in specie.facts"
+                                        :key="index + 'st'"
+                                    >
+                                        <td>
+                                            <v-text-field single-line v-model="specie.facts[index]"
+                                                          :rules="notEmptyRule"
+                                                          placeholder="Впишите описание"></v-text-field>
+                                        </td>
+                                        <td>
+                                            <v-btn color="red" x-small depressed @click="removeFact(index)">
+                                                X
+                                            </v-btn>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </template>
+                            </v-simple-table>
+                        </v-row>
+                        <v-row class="d-flex flex-column">
+                            <v-banner class="mt-5 mb-2">Статус
+                                <v-btn small class="ml-10" @click="addStatus">Добавить еще</v-btn>
+                            </v-banner>
+                            <v-simple-table dense>
+                                <template v-slot:default>
+                                    <thead>
+                                    <tr>
+                                        <th class="text-left">
+                                            Описание статуса
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr
+                                        v-for="(st,index) in specie.status"
+                                        :key="index + 'tt'"
+                                    >
+                                        <td>
+                                            <v-text-field single-line v-model="specie.status[index]"
+                                                          :rules="notEmptyRule"
+                                                          placeholder="Впишите описание"></v-text-field>
+                                        </td>
+                                        <td>
+                                            <v-btn color="red" x-small depressed @click="removeStatus(index)">
+                                                X
+                                            </v-btn>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </template>
+                            </v-simple-table>
+                        </v-row>
+                    </v-card>
+                </v-tab-item>
+                <v-tab-item>
+                    <crop-image class="mb-10"
+                                ref="cropperBig"
+                                :value="specie.preview_image_big_url"
+                                key="big"
+                                :min-crop-box-height="600"
+                                :min-crop-box-width="1200"
+                                :aspect-ratio="285/180"
+                                label="Выберите картинку с большим размером"
+                                :rules="notEmptyRule"
+                    />
+
+                    <crop-image ref="cropperSmall"
+                                :value="specie.preview_image_small_url"
+                                key="small"
+                                label="Выберите картинку с меньшим размером"
+                                :dialog-max-width="700"
+                                :min-crop-box-height="387"
+                                :min-crop-box-width="394"
+                                :aspect-ratio="387/394"
+                                :rules="notEmptyRule"/>
+                </v-tab-item>
+                <v-tab-item>
+                    <v-card>
+                        <vue-editor v-model="specie.content"
+                                    useCustomImageHandler
+                                    @image-added="handleImageAdded"
+                                    id="contentEditor"
+                        ></vue-editor>
+                    </v-card>
+                </v-tab-item>
+            </v-form>
         </v-tabs-items>
         <v-overlay :value="overlay">
             <v-progress-circular
@@ -251,6 +293,7 @@ export default {
     },
     data() {
         return {
+            validForm: true,
             tab: null,
             overlay: true,
             specie: {
@@ -317,12 +360,20 @@ export default {
         saveSpecie() {
             this.overlay = true;
 
-            var formData = new FormData();
+            if (!this.$refs.form.validate()) {
+                this.$store.commit('triggerSnack', {text: 'Убедитесь что вы заполняли нужные поля', color: 'red'})
+                this.overlay = false;
+                return;
+            }
 
+            var formData = new FormData();
             this.buildFormData(formData, this.specie)
 
-            if (this.$refs.cropper && this.$refs.cropper.croppedBlob) {
-                formData.append('preview_image', this.$refs.cropper.croppedBlob)
+            if (this.$refs.cropperBig && this.$refs.cropperBig.croppedBlob) {
+                formData.append('preview_image_big', this.$refs.cropperBig.croppedBlob)
+            }
+            if (this.$refs.cropperSmall && this.$refs.cropperSmall.croppedBlob) {
+                formData.append('preview_image_small', this.$refs.cropperSmall.croppedBlob)
             }
 
             this.$http.post(`/api/red-book/${this.specie.id}/update`, formData)

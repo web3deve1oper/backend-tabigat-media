@@ -17,6 +17,8 @@ class CreateRedBookTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('name_latin')->nullable();
+            $table->string('description')->nullable();
+            $table->string('slug')->nullable();
             $table->string('domain')->nullable();
             $table->string('type')->nullable();
             $table->string('class')->nullable();
@@ -27,7 +29,8 @@ class CreateRedBookTable extends Migration
             $table->text('content')->nullable();
             $table->json('status')->nullable();
             $table->json('facts')->nullable();
-            $table->text('preview_image_url')->nullable();
+            $table->text('preview_image_big_url')->nullable();
+            $table->text('preview_image_small_url')->nullable();
             $table->timestamps();
         });
     }

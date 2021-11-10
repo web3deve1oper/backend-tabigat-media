@@ -25,7 +25,10 @@ class RedBook extends Model
         'content',
         'status',
         'facts',
-        'preview_image_url'
+        'preview_image_big_url',
+        'preview_image_small_url',
+        'slug',
+        'description'
     ];
 
     protected $casts = [

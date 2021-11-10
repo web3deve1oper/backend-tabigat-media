@@ -25,7 +25,8 @@ class Article extends Model
         'photography',
         'views',
         'staff',
-        'preview_image_url'
+        'preview_image_big_url',
+        'preview_image_small_url'
     ];
 
     protected $with = [
@@ -34,7 +35,7 @@ class Article extends Model
 
     protected $casts = [
         'staff' => 'array',
-        'posted_at' => 'date:Y-m-d',
+        'posted_at' => 'datetime:Y-m-d H:i:s',
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
         'is_long_read' => 'boolean'

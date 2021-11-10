@@ -28,12 +28,20 @@ class ArticleController extends Controller
 
         $tags = Tag::createOrReturnIds($article['tags'] ?? []);
 
-        if (isset($article['preview_image'])) {
-            $file = $request->file('preview_image');
+        if (isset($article['preview_image_big'])) {
+            $file = $request->file('preview_image_big');
             $image = Storage::disk('public')->put("/article_preview/", $file);
-            $article['preview_image_url'] = Storage::disk('public')->url($image);
+            $article['preview_image_big_url'] = Storage::disk('public')->url($image);
 
-            unset($article['preview_image']);
+            unset($article['preview_image_big']);
+        }
+
+        if (isset($article['preview_image_small'])) {
+            $file = $request->file('preview_image_small');
+            $image = Storage::disk('public')->put("/article_preview/", $file);
+            $article['preview_image_small_url'] = Storage::disk('public')->url($image);
+
+            unset($article['preview_small_big']);
         }
 
         $article = Article::create([
@@ -47,7 +55,9 @@ class ArticleController extends Controller
                 'read_time' => $article['read_time'],
                 'photography' => $article['photography'],
                 'staff' => $article['staff'] ?? [],
-                'preview_image_url' => $article['preview_image_url']
+                'slug' => $article['slug'],
+                'preview_image_big_url' => $article['preview_image_big_url'] ?? '',
+                'preview_image_small_url' => $article['preview_image_small_url']
             ]
         );
 
@@ -62,15 +72,24 @@ class ArticleController extends Controller
 
         $tags = Tag::createOrReturnIds($art['tags'] ?? []);
 
-        if (isset($art['preview_image'])) {
-            $file = $request->file('preview_image');
+        if (isset($art['preview_image_big'])) {
+            $file = $request->file('preview_image_big');
             $image = Storage::disk('public')->put("/article_preview/", $file);
-            $article['preview_image_url'] = Storage::disk('public')->url($image);
+            $article['preview_image_big_url'] = Storage::disk('public')->url($image);
 
-            unset($art['preview_image']);
+            unset($art['preview_image_big']);
+        }
+
+        if (isset($art['preview_image_small'])) {
+            $file = $request->file('preview_image_small');
+            $image = Storage::disk('public')->put("/article_preview/", $file);
+            $article['preview_image_small_url'] = Storage::disk('public')->url($image);
+
+            unset($art['preview_image_small']);
         }
 
         $article->title = $art['title'];
+        $article->slug = $art['slug'];
         $article->description = $art['description'];
         $article->author_id = $art['author_id'] ?? null;
         $article->rubric_id = $art['rubric_id'] ?? null;

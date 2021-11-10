@@ -38,6 +38,15 @@
                                 ></v-text-field>
                             </v-col>
                             <v-col
+                                cols="12"
+                            >
+                                <v-text-field
+                                    v-model="dialogRubric.description"
+                                    label="Описание"
+                                    :counter="254"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col
                                 cols="3"
                             >
                                 <v-text-field
@@ -140,6 +149,12 @@ export default {
                     type: 'edit-text-field'
                 },
                 {
+                    text: 'Описание',
+                    value: 'description',
+                    type: 'edit-text-field',
+                    sortable: false,
+                },
+                {
                   text: 'Количество статей',
                   value: 'articles_count',
                   type: 'text'
@@ -152,12 +167,6 @@ export default {
                 {
                     text: 'Основной',
                     value: 'is_preferable',
-                    sortable: false,
-                    type: 'checkbox'
-                },
-                {
-                    text: 'Отоброжать в списке',
-                    value: 'is_visible',
                     sortable: false,
                     type: 'checkbox'
                 }

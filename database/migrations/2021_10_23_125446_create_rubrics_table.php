@@ -16,6 +16,7 @@ class CreateRubricsTable extends Migration
         Schema::create('rubrics', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('description')->nullable();
             $table->boolean('is_preferable')->default(false);
             $table->boolean('is_visible')->default(true);
             $table->integer('order')->nullable();

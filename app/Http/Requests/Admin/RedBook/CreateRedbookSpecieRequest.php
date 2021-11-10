@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Admin\RedBook;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -26,16 +26,10 @@ class CreateRedbookSpecieRequest extends FormRequest
         return [
             'name' => 'required',
             'name_latin' => 'required',
-            'domain' => 'required',
-            'type' => 'required',
-            'class'=> 'required',
-            'squad' => 'required',
-            'family' => 'required',
-            'genus' => 'required',
-            'kind' => 'required',
             'content' => 'required',
-            'status' => 'required|array',
-            'facts'  => ' required|array'
+            'slug'  => 'required',
+            'preview_image_big' => 'required|image',
+            'preview_image_small' => 'required|image',
         ];
     }
 }

@@ -37,8 +37,6 @@
                                     type="number"
                                     v-model="it[header.value]"
                                     label="Проставить очередность"
-                                    single-line
-                                    counter
                                 ></v-text-field>
                             </template>
                         </v-edit-dialog>
@@ -52,6 +50,8 @@
                                 <v-text-field
                                     v-model="it[header.value]"
                                     label="Новое название"
+                                    :counter="254"
+                                    error-count="Не должно превышать 254"
                                 ></v-text-field>
                             </template>
                         </v-edit-dialog>

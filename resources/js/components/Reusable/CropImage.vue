@@ -1,12 +1,12 @@
 <template>
-    <v-card class="mt-5 elevation-10" height="2000px">
+    <div>
         <v-row justify="center" class="d-flex flex-column" align-content="center">
-            <input
+            <v-file-input
                 class="mt-5"
                 type="file"
                 name="image"
                 accept="image/*"
-                placeholder="Выберите обложку"
+                :placeholder="label"
                 @change="setImage"
             />
             <v-dialog
@@ -28,9 +28,6 @@
                     />
                     <v-banner v-show="cropSrc" single-line>
                         Нажмите на картинку если хотите отредактировать ее
-                    </v-banner>
-                    <v-banner v-show="!cropSrc" single-line>
-                        Выберите картинку, нажав на кнопку выше
                     </v-banner>
                 </template>
                 <v-card>
@@ -62,7 +59,7 @@
                 </v-card>
             </v-dialog>
         </v-row>
-    </v-card>
+    </div>
 </template>
 
 <script>
@@ -80,7 +77,11 @@ export default {
         objectUrl: {default: ""},
         minCropBoxWidth: {default: 600},
         minCropBoxHeight: {default: 200},
-        aspectRatio: {default: 3}
+        aspectRatio: {default: 3},
+        rules: Array,
+        label: {
+            default: 'Выберите картинку'
+        }
     },
     components: {
         VueCropper
@@ -109,7 +110,7 @@ export default {
     methods: {
         setImage(e) {
             // const file = e;
-            const file = e.target.files[0];
+            const file = e;
 
             this.file = file;
             this.filename = file.name;

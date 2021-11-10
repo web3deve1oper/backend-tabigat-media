@@ -28,150 +28,181 @@
         </v-toolbar>
 
         <v-tabs-items v-model="tab" class="mt-5">
-            <v-tab-item>
-                <v-card flat max-width="700px" max-height="2000px" class="ml-auto mr-auto mt-5 mb-10">
-                    <v-row>
-                        <v-text-field
-                            v-model="article.title"
-                            label="Название"
-                            :rules="notEmptyRule"
-                            counter="255"
-                            clearable
-                        ></v-text-field>
-                    </v-row>
-                    <v-row>
-                        <v-text-field
-                            v-model="article.description"
-                            counter="255"
-                            :rules="notEmptyRule"
-                            label="Краткое описание"
-                            clearable
-                        ></v-text-field>
-                    </v-row>
-                    <v-row>
-                        <v-select v-model="article.rubric_id"
-                                  :items="rubrics"
-                                  item-text="title"
-                                  item-value="id"
-                                  label="Рубрика"
-                                  required
-                        >
-                        </v-select>
-                    </v-row>
-                    <v-row>
-                        <v-text-field
-                            v-model="article.read_time"
-                            label="Время прочтения"
-                            :rules="notEmptyRule"
-                            clearable
-                        ></v-text-field>
-                    </v-row>
-                    <v-row>
-                        <v-col>
-                            Опубликовать
-                            <v-simple-checkbox
-                                v-model="article.posted"
-                                label="Опубликовать"
-                            ></v-simple-checkbox>
-                        </v-col>
-                        <v-col>
-                            Long-Read
-                            <v-simple-checkbox
-                                v-model="article.is_long_read"
-                                label="Long read"
-                            ></v-simple-checkbox>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-combobox
-                            v-model="article.tags"
-                            :items="existingTags"
-                            chips
-                            clearable
-                            label="Теги"
-                            multiple
-                            prepend-icon="mdi-filter-variant"
-                            solo
-                        >
-                            <template v-slot:selection="{ attrs, item, select, selected }">
-                                <v-chip
-                                    v-bind="attrs"
-                                    :input-value="selected"
-                                    close
-                                    @click="select"
-                                    @click:close="removeTag(item)"
-                                >
-                                    <strong>#{{ item }}</strong>&nbsp;
-                                </v-chip>
-                            </template>
-                        </v-combobox>
-                    </v-row>
-                </v-card>
-            </v-tab-item>
-            <v-tab-item>
-                <v-card flat max-width="900px" height="2000px" class="ml-auto mr-auto mt-5">
-                    <v-row>
-                        <v-select v-model="article.author"
-                                  :items="authors"
-                                  item-text="full_name"
-                                  item-value="id"
-                                  label="Автор статьи"
-                                  required
-                        >
-                        </v-select>
-                    </v-row>
-                    <v-banner class="mt-5 mb-2">Ко-авторы
-                        <v-btn small class="ml-10" @click="addStaff">Добавить еще</v-btn>
-                    </v-banner>
-                    <v-simple-table dense>
-                        <template v-slot:default>
-                            <thead>
-                            <tr>
-                                <th class="text-left">
-                                    Должность в создании статьи
-                                </th>
-                                <th class="text-left">
-                                    Имя
-                                </th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr
-                                v-for="(st,index) in article.staff"
-                                :key="index + 'st'"
+            <v-form ref="form"
+                    v-model="validForm"
+                    lazy-validation>
+                <v-tab-item>
+                    <v-card flat max-width="700px" max-height="2000px" class="ml-auto mr-auto mt-5 mb-10">
+                        <v-row>
+                            <v-text-field
+                                v-model="article.title"
+                                label="Название"
+                                :rules="notEmptyRule"
+                                counter="255"
+                                clearable
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                v-model="article.slug"
+                                label="Слаг"
+                                :rules="notEmptyRule"
+                                counter="255"
+                                clearable
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                v-model="article.description"
+                                counter="255"
+                                :rules="notEmptyRule"
+                                label="Краткое описание"
+                                clearable
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-select v-model="article.rubric_id"
+                                      :items="rubrics"
+                                      item-text="title"
+                                      item-value="id"
+                                      label="Рубрика"
+                                      required
                             >
-                                <td>
-                                    <v-text-field single-line :rules="notEmptyRule" v-model="st.title"
-                                                  placeholder="Впишите позицию"></v-text-field>
-                                </td>
-                                <td>
-                                    <v-text-field single-line v-model="st.full_name" :rules="notEmptyRule"
-                                                  placeholder="Впишите имя"></v-text-field>
-                                </td>
-                                <td>
-                                    <v-btn color="red" x-small depressed @click="removeStaff(index)">
-                                        X
-                                    </v-btn>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </template>
-                    </v-simple-table>
-                </v-card>
-            </v-tab-item>
-            <v-tab-item>
-                <crop-image ref="cropper" :value="article.preview_image"/>
-            </v-tab-item>
-            <v-tab-item>
-                <v-card>
-                    <vue-editor v-model="article.content"
-                                useCustomImageHandler
-                                @image-added="handleImageAdded"
-                                id="contentEditor"
-                    ></vue-editor>
-                </v-card>
-            </v-tab-item>
+                            </v-select>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                v-model="article.read_time"
+                                label="Время прочтения"
+                                clearable
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                Опубликовать
+                                <v-simple-checkbox
+                                    v-model="article.posted"
+                                    label="Опубликовать"
+                                ></v-simple-checkbox>
+                            </v-col>
+                            <v-col>
+                                Long-Read
+                                <v-simple-checkbox
+                                    v-model="article.is_long_read"
+                                    label="Long read"
+                                ></v-simple-checkbox>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-combobox
+                                v-model="article.tags"
+                                :items="existingTags"
+                                chips
+                                clearable
+                                label="Теги"
+                                multiple
+                                prepend-icon="mdi-filter-variant"
+                                solo
+                            >
+                                <template v-slot:selection="{ attrs, item, select, selected }">
+                                    <v-chip
+                                        v-bind="attrs"
+                                        :input-value="selected"
+                                        close
+                                        @click="select"
+                                        @click:close="removeTag(item)"
+                                    >
+                                        <strong>#{{ item }}</strong>&nbsp;
+                                    </v-chip>
+                                </template>
+                            </v-combobox>
+                        </v-row>
+                    </v-card>
+                </v-tab-item>
+                <v-tab-item>
+                    <v-card flat max-width="900px" height="2000px" class="ml-auto mr-auto mt-5">
+                        <v-row>
+                            <v-select v-model="article.author"
+                                      :items="authors"
+                                      item-text="full_name"
+                                      item-value="id"
+                                      label="Автор статьи"
+                                      required
+                            >
+                            </v-select>
+                        </v-row>
+                        <v-banner class="mt-5 mb-2">Ко-авторы
+                            <v-btn small class="ml-10" @click="addStaff">Добавить еще</v-btn>
+                        </v-banner>
+                        <v-simple-table dense>
+                            <template v-slot:default>
+                                <thead>
+                                <tr>
+                                    <th class="text-left">
+                                        Должность в создании статьи
+                                    </th>
+                                    <th class="text-left">
+                                        Имя
+                                    </th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr
+                                    v-for="(st,index) in article.staff"
+                                    :key="index + 'st'"
+                                >
+                                    <td>
+                                        <v-text-field single-line :rules="notEmptyRule" v-model="st.title"
+                                                      placeholder="Впишите позицию"></v-text-field>
+                                    </td>
+                                    <td>
+                                        <v-text-field single-line v-model="st.full_name" :rules="notEmptyRule"
+                                                      placeholder="Впишите имя"></v-text-field>
+                                    </td>
+                                    <td>
+                                        <v-btn color="red" x-small depressed @click="removeStaff(index)">
+                                            X
+                                        </v-btn>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </template>
+                        </v-simple-table>
+                    </v-card>
+                </v-tab-item>
+                <v-tab-item>
+                    <crop-image class="mb-10"
+                                v-show="!article.is_long_read"
+                                ref="cropperBig"
+                                :value="article.preview_image_big"
+                                key="big"
+                                label="Выберите картинку с большим размером"
+                                :rules="notEmptyRule"
+                    />
+
+                    <crop-image ref="cropperSmall"
+                                :value="article.preview_image_small"
+                                key="small"
+                                label="Выберите картинку с меньшим размером"
+                                :dialog-max-width="700"
+                                :max-width="570"
+                                :max-height="360"
+                                :min-crop-box-height="285"
+                                :min-crop-box-width="180"
+                                :aspect-ratio="285/180"
+                                :rules="notEmptyRule"/>
+                </v-tab-item>
+                <v-tab-item>
+                    <v-card>
+                        <vue-editor v-model="article.content"
+                                    useCustomImageHandler
+                                    @image-added="handleImageAdded"
+                                    id="contentEditor"
+                        ></vue-editor>
+                    </v-card>
+                </v-tab-item>
+            </v-form>
         </v-tabs-items>
     </div>
 </template>
@@ -197,6 +228,7 @@ export default {
     },
     data() {
         return {
+            validForm: false,
             existingTags: [],
             imgSrc: '',
             cropImg: '',
@@ -204,6 +236,7 @@ export default {
             authors: [],
             article: {
                 title: '',
+                slug: '',
                 rubric_id: '',
                 description: '',
                 author: '',
@@ -283,11 +316,18 @@ export default {
                 });
         },
         saveArticle() {
-            var formData = new FormData();
+            if (!this.$refs.form.validate()) {
+                return;
+            }
 
+            var formData = new FormData();
             this.buildFormData(formData, this.article)
-            if (this.$refs.cropper && this.$refs.cropper.croppedBlob) {
-                formData.append('preview_image', this.$refs.cropper.croppedBlob)
+
+            if (this.$refs.cropperBig && this.$refs.cropperBig.croppedBlob) {
+                formData.append('preview_image_big', this.$refs.cropperBig.croppedBlob)
+            }
+            if (this.$refs.cropperSmall && this.$refs.cropperSmall.croppedBlob) {
+                formData.append('preview_image_small', this.$refs.cropperSmall.croppedBlob)
             }
 
             this.$http.post('/api/articles/create', formData)
@@ -296,7 +336,11 @@ export default {
                     this.$router.push({name: 'update-article', params: {id: res.data.data.id}});
                 })
                 .catch(err => {
-                    console.log(err)
+                    if (err.response.status === 422) {
+                        this.$store.commit('triggerSnack', {text: 'Проверьте целостность данных', color: 'red'})
+                    } else {
+                        this.$store.commit('triggerSnack', {text: 'Ошибка, перезагрузите страницу', color: 'red'})
+                    }
                 })
         },
         buildFormData(formData, data, parentKey) {
