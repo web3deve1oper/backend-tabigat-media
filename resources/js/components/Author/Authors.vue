@@ -49,6 +49,9 @@ export default {
     components: {
       ApiDataTable
     },
+    mounted() {
+      this.$store.commit('changeHeaderText', 'Авторы')
+    },
     data() {
         return {
             headers: [

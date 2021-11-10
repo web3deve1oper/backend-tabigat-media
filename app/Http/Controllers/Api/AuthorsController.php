@@ -29,6 +29,7 @@ class AuthorsController extends Controller
                 AllowedFilter::exact('id'),
                 AllowedFilter::partial('biography'),
                 AllowedFilter::partial('full_name'),
+                AllowedFilter::scope('search', 'global_search')
             ])
             ->paginate($perPage);
 

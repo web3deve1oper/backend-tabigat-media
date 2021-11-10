@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,5 +24,12 @@ class Author extends Model
     public function articles()
     {
         return $this->hasMany(Article::class);
+    }
+
+    public function scopeGlobalSearch(Builder $query, $search)
+    {
+        return $query->where('id', $search)
+            ->orWhere('full_name', 'LIKE', "%$search$%")
+            ->orWhere('biography', 'LIKE', "%$search%");
     }
 }
