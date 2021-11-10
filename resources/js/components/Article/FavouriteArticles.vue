@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-row justify="space-between" align-content="center" class="mt-auto mb-auto">
-            <v-col cols="4" v-for="favourite in favourites" :key="favourite.id">
+            <v-col cols="4" v-for="favourite in favourites" :key="favourite.id" v-show="!loading">
                 <v-card
                     class="mx-auto"
                     max-width="400"
@@ -106,13 +106,13 @@ export default {
         },
         getFavourites() {
             this.loading = true;
-            this.sleep(2000).then(res => {
-                this.$http.get('/api/articles?filter[favourite]=1&include=author')
-                    .then(res => {
+            this.$http.get('/api/articles?filter[favourite]=1&include=author')
+                .then(res => {
+                    this.favourites = res.data.data.data;
+                    this.sleep(2000).then(rs => {
                         this.loading = false;
-                        this.favourites = res.data.data.data;
                     })
-            })
+                })
         },
         favouriteSelected() {
             this.dialog = false;
