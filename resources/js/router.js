@@ -15,6 +15,7 @@ import Authors from "./components/Author/Authors";
 import PageNotFound from "./components/PageNotFound";
 import CreateAuthor from "./components/Author/CreateAuthor";
 import UpdateAuthor from "./components/Author/UpdateAuthor";
+import FavouriteArticles from "./FavouriteArticles";
 
 Vue.use(VueRouter);
 
@@ -63,6 +64,14 @@ const router = new VueRouter({
             path: '/admin/articles/:id',
             name: 'update-article',
             component: UpdateArticle,
+            meta: {
+                middleware: [auth]
+            }
+        },
+        {
+            path: '/admin/articles-favourite',
+            name: 'favourite-articles',
+            component: FavouriteArticles,
             meta: {
                 middleware: [auth]
             }

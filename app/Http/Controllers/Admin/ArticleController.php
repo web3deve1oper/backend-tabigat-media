@@ -112,4 +112,20 @@ class ArticleController extends Controller
 
         return $this->apiResponse(null);
     }
+
+    public function addFavourite(Article $article)
+    {
+        $article->is_favourite = true;
+        $article->save();
+
+        return $this->apiResponse($article);
+    }
+
+    public function deleteFavourite(Article $article)
+    {
+        $article->is_favourite = false;
+        $article->save();
+
+        return $this->apiResponse(null);
+    }
 }

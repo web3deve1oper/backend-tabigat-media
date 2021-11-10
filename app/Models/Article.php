@@ -26,7 +26,8 @@ class Article extends Model
         'views',
         'staff',
         'preview_image_big_url',
-        'preview_image_small_url'
+        'preview_image_small_url',
+        'is_favourite'
     ];
 
     protected $with = [
@@ -38,7 +39,8 @@ class Article extends Model
         'posted_at' => 'datetime:Y-m-d H:i:s',
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
-        'is_long_read' => 'boolean'
+        'is_long_read' => 'boolean',
+        'is_favourite' => 'boolean'
     ];
 
     public function author()

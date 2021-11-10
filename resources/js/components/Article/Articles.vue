@@ -5,7 +5,7 @@
                 <!--                <v-col cols="1" class="mt-5">-->
                 <!--                    Фильтр-->
                 <!--                </v-col>-->
-                <v-col cols="5">
+                <v-col>
                     <v-btn
                         color="primary"
                         class="mt-2"
@@ -14,8 +14,16 @@
                     >
                         Добавить статью
                     </v-btn>
+                    <v-btn
+                        color="orange"
+                        class="mt-2"
+                        dark
+                        @click="$router.push({name:'favourite-articles'})"
+                    >
+                        Избранные статьи
+                    </v-btn>
                 </v-col>
-                <v-col cols="7">
+                <v-col>
                     <v-text-field
                         v-model="search"
                         append-icon="mdi-magnify"

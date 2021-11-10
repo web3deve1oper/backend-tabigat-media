@@ -29,6 +29,7 @@ class CreateArticlesTable extends Migration
             $table->json('staff')->nullable();
             $table->text('preview_image_big_url')->nullable();
             $table->text('preview_image_small_url')->nullable();
+            $table->boolean('is_favourite')->default(false);
             $table->timestamps();
 
             $table->foreign('author_id')

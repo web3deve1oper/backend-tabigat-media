@@ -30,7 +30,10 @@ class ArticlesController extends Controller
                 AllowedFilter::callback('posted', function ($query, $value) {
                     $query->whereNotNull('posted_at');
                 }),
-                AllowedFilter::exact('tags.name', null)
+                AllowedFilter::exact('tags.name', null),
+                AllowedFilter::callback('favourite', function($query, $value) {
+                    $query->where('is_favourite', $value);
+                })
             ])
             ->allowedSorts('id', 'views', 'read_time', 'created_at', 'posted_at', 'updated_at')
             ->paginate(request('itemsPerPage'));
