@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const DEV = 'http://tabigat-media.test/';
-// const remoteDEV = 'http://sleepy-lowlands-53073.herokuapp.com/';
+const remoteDEV = 'http://sabadoryo.com/';
 
 import store from '../store';
 import router from '../router';
@@ -10,7 +10,7 @@ import router from '../router';
  @TODO change before deploying
 */
 let instance = axios.create({
-    baseURL : DEV
+    baseURL : remoteDEV
 });
 
 instance.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
