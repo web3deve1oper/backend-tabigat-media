@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <Sidebar></Sidebar>
+        <Sidebar v-if="isAuth"></Sidebar>
 
         <Header></Header>
 
@@ -46,6 +46,9 @@ export default {
         },
         snackText() {
             return this.$store.state.snackText
+        },
+        isAuth() {
+            return this.$store.state.isAuth
         }
     },
 }
