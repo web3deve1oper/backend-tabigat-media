@@ -56,14 +56,6 @@
                                     label="Основной"
                                 ></v-checkbox>
                             </v-col>
-                            <v-col cols="12">
-                                <v-select
-                                    v-model="dialogRubric.type"
-                                    :items="rubricTypes"
-                                    label="Вид рубрики"
-                                    single-line
-                                ></v-select>
-                            </v-col>
                         </v-row>
                     </v-container>
                 </v-card-text>
@@ -131,7 +123,6 @@ export default {
                 {field: 'is_preferable', type: 'checkbox'},
                 {field: 'order', type: 'edit-text-field'},
             ],
-            rubricTypes: ['default-view', 'fluid-view', 'red-book', 'solo-view', 'staggered-view'],
             orderError: null,
             titleError: null,
             dialogType: '',
