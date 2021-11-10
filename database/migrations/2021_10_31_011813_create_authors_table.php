@@ -17,6 +17,7 @@ class CreateAuthorsTable extends Migration
             $table->id();
             $table->string('full_name');
             $table->text('biography')->nullable();
+            $table->text('preview_image_url')->nullable();
             $table->timestamps();
         });
     }

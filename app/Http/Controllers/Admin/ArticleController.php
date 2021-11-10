@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Article\CreateArticleRequest;
 use App\Http\Requests\Admin\Article\DeleteArticlesRequest;
 use App\Http\Requests\Admin\Article\UpdateArticleRequest;
 use App\Models\Article;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,6 +25,8 @@ class ArticleController extends Controller
     public function create(CreateArticleRequest $request)
     {
         $article = $request->all();
+
+        $tags = Tag::createOrReturnIds($article['tags']);
 
         if (isset($article['preview_image'])) {
             $file = $request->file('preview_image');
@@ -48,12 +51,16 @@ class ArticleController extends Controller
             ]
         );
 
+        $article->tags()->sync($tags);
+
         return $this->apiResponse($article);
     }
 
     public function update(UpdateArticleRequest $request, Article $article)
     {
         $art = $request->all();
+
+        $tags = Tag::createOrReturnIds($art['tags']);
 
         if (isset($art['preview_image'])) {
             $file = $request->file('preview_image');
@@ -71,19 +78,18 @@ class ArticleController extends Controller
         $article->is_long_read = $art['is_long_read'] === 'true';
         $article->posted_at = $art['posted'] === 'true' ? now()->toDateTimeString() : null;
         $article->read_time = $art['read_time'] ?? null;
-        $article->photography= $art['photography'] ?? null;
+        $article->photography = $art['photography'] ?? null;
         $article->staff = $art['staff'] ?? null;
         $article->save();
 
+        $article->tags()->sync($tags);
 
         return $this->apiResponse($article);
     }
 
-    public function delete(DeleteArticlesRequest $request)
+    public function delete(Article $article)
     {
-        $rubrics = $request->articles;
-
-        Article::destroy(array_column($rubrics,'id'));
+        $article->delete();
 
         return $this->apiResponse(null);
     }

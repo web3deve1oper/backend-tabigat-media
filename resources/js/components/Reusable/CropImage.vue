@@ -38,10 +38,10 @@
                     <v-card-text>
                         <vue-cropper
                             ref="cropper"
-                            :minCropBoxWidth="600"
-                            :minCropBoxHeight="200"
-                            :aspectRatio="3/1"
-                            :initialAspectRation="3/1"
+                            :minCropBoxWidth="minCropBoxWidth"
+                            :minCropBoxHeight="minCropBoxHeight"
+                            :aspectRatio="aspectRatio"
+                            :initialAspectRation="aspectRatio"
                             :background="true"
                             :src="imgSrc"
                             :modal="true"
@@ -77,7 +77,10 @@ export default {
         maxWidth: {default: 1200},
         maxHeight: {default: 400},
         // the URL of the blob image
-        objectUrl: {default: ""}
+        objectUrl: {default: ""},
+        minCropBoxWidth: {default: 600},
+        minCropBoxHeight: {default: 200},
+        aspectRatio: {default: 3}
     },
     components: {
         VueCropper

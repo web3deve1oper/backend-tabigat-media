@@ -9,7 +9,7 @@
                 <v-btn
                     color="primary"
                     dark
-                    class="mb-2"
+                    class="mt-5 mb-3 ml-3"
                     @click="changeRubricType('create')"
                     v-bind="attrs"
                     v-on="on"
@@ -54,14 +54,6 @@
                                 <v-checkbox
                                     v-model="dialogRubric.is_preferable"
                                     label="Основной"
-                                ></v-checkbox>
-                            </v-col>
-                            <v-col
-                                cols="6"
-                            >
-                                <v-checkbox
-                                    v-model="dialogRubric.is_visible"
-                                    label="Отоброжать на платформе"
                                 ></v-checkbox>
                             </v-col>
                             <v-col cols="12">
@@ -177,14 +169,6 @@ export default {
                     value: 'is_visible',
                     sortable: false,
                     type: 'checkbox'
-                },
-                {
-                    text: 'Вид',
-                    value: 'type',
-                    sortable: false,
-                    type: 'edit-select-field',
-                    selectLabel: 'Вид',
-                    selectItems: ['default-view', 'fluid-view', 'red-book', 'solo-view', 'staggered-view']
                 }
             ],
             rubrics: null,

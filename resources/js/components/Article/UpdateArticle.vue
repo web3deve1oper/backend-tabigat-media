@@ -6,8 +6,12 @@
             <v-banner>После того как вы внесли все изменения, пожалуйста сохраните их</v-banner>
             <v-spacer></v-spacer>
 
+            <v-btn color="red mr-3" @click="deleteDialog = true">
+                Удалить
+            </v-btn>
+
             <v-btn color="primary" @click="updateArticle">
-                Сохранить
+                Изменить
             </v-btn>
 
             <template v-slot:extension>
@@ -68,19 +72,41 @@
                     </v-row>
                     <v-row>
                         <v-col>
-                            Опубликовать
                             <v-checkbox
                                 v-model="article.posted"
                                 label="Опубликовать"
                             ></v-checkbox>
                         </v-col>
                         <v-col>
-                            Long-Read
                             <v-checkbox
                                 v-model="article.is_long_read"
                                 label="Long read"
                             ></v-checkbox>
                         </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-combobox
+                            v-model="article.tags"
+                            :items="existingTags"
+                            chips
+                            clearable
+                            label="Теги"
+                            multiple
+                            prepend-icon="mdi-filter-variant"
+                            solo
+                        >
+                            <template v-slot:selection="{ attrs, item, select, selected }">
+                                <v-chip
+                                    v-bind="attrs"
+                                    :input-value="selected"
+                                    close
+                                    @click="select"
+                                    @click:close="removeTag(item)"
+                                >
+                                    <strong>#{{ item }}</strong>&nbsp;
+                                </v-chip>
+                            </template>
+                        </v-combobox>
                     </v-row>
                 </v-card>
             </v-tab-item>
@@ -155,6 +181,37 @@
                 size="64"
             ></v-progress-circular>
         </v-overlay>
+        <v-dialog
+            v-model="deleteDialog"
+            persistent
+            max-width="600"
+        >
+            <v-card>
+                <v-card-title class="text-h5">
+                    Вы действительно хотите удалить?
+                </v-card-title>
+                <v-card-text>
+                    Эти данные нельзя будет вернуть, вы действительно хотите удалить?
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn
+                        color="green darken-1"
+                        text
+                        @click="deleteDialog = false"
+                    >
+                        Отмена
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="green darken-1"
+                        text
+                        @click="deleteArticle"
+                    >
+                        Удалить
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 <script>
@@ -178,6 +235,7 @@ export default {
     },
     data() {
         return {
+            existingTags: [],
             imgSrc: '',
             overlay: true,
             cropImg: '',
@@ -210,7 +268,8 @@ export default {
             notEmptyRule: [
                 v => !!v || 'Обязательное поле',
             ],
-            rubrics: []
+            rubrics: [],
+            deleteDialog: false
         }
     },
     methods: {
@@ -277,7 +336,7 @@ export default {
             }
         },
         getArticle() {
-            this.$http.get(`/api/articles/${this.$route.params.id}/edit`)
+            this.$http.get(`/api/articles/${this.$route.params.id}`)
                 .then(res => {
                     this.article = res.data.data;
                     if (this.article.posted_at) {
@@ -285,12 +344,40 @@ export default {
                     }
                     this.$store.commit('changeHeaderText', 'Изменить статью:' + this.article.title)
                     this.article.staff = res.data.data.staff ?? [];
+                    this.article.tags = res.data.data.tags.map(a => a.name);
                     this.overlay = false;
                 })
                 .catch(err => {
                     console.log(err)
                 })
-        }
+        },
+        deleteArticle() {
+            this.overlay = true
+
+            this.$http.delete(`/api/articles/${this.article.id}`)
+                .then(res => {
+                    this.overlay = false;
+                    this.$store.commit('triggerSnack', {text : "Успешно удалено", color: "green"})
+                    this.$router.push('/admin/articles')
+                })
+                .catch(res => {
+                    this.overlay = false;
+                    this.$store.commit('triggerSnack', {text: "Ошибка! Перезагрузите страницу", color: "red"})
+                })
+        },
+        getTags() {
+            this.$http('/api/tags')
+                .then(res => {
+                    this.existingTags = res.data.data.map(a => a.name);
+                })
+                .catch(err => {
+
+                })
+        },
+        removeTag(item) {
+            this.article.tags.splice(this.article.tags.indexOf(item), 1)
+            this.article.tags = [...this.article.tags]
+        },
     }
 }
 </script>

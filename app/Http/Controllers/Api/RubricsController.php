@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Rubric;
+use App\Services\SpatieQueryBuilder\Includes\CustomSortedArticlesInclude;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedInclude;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class RubricsController extends Controller
@@ -18,10 +21,16 @@ class RubricsController extends Controller
     public function index()
     {
         $rubrics = QueryBuilder::for(Rubric::class)
-            ->defaultSort('id')
-            ->allowedSorts('id','title','order')
+            ->defaultSort('id', 'created_at')
+            ->allowedSorts([
+                'id',
+                'title',
+                'order',
+                'articles_count'
+            ])
             ->allowedIncludes([
-                'articles',
+                'articles'
+                //AllowedInclude::custom('selfSortedArticles', new CustomSortedArticlesInclude())
             ])
             ->allowedFilters([
                 AllowedFilter::exact('order'),
@@ -45,7 +54,7 @@ class RubricsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -56,7 +65,7 @@ class RubricsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -67,7 +76,7 @@ class RubricsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -78,8 +87,8 @@ class RubricsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -90,7 +99,7 @@ class RubricsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

@@ -6,7 +6,7 @@
             :options.sync="options"
             :server-items-length="totalItems"
             :loading="loading"
-            show-select
+            :show-select="showSelect"
             v-model="selected"
             class="elevation-5"
             :loading-text="loadingText"
@@ -15,8 +15,8 @@
         >
             <template v-slot:body="props">
                 <tbody>
-                <tr v-for="it in props.items">
-                    <td>
+                <tr v-for="it in props.items" @click="handleRowClick(it)">
+                    <td v-if="showSelect">
                         <v-simple-checkbox
                             v-model="props.isSelected(it)"
                             @input="props.select(it,!props.isSelected(it))"
@@ -93,7 +93,16 @@ export default {
         headers: Array,
         loadingText: String,
         apiUrl: String,
-        apiIncludes: String
+        apiIncludes: String,
+        showSelect: {
+            default: true,
+            type: Boolean
+        },
+        redirectToEditPageOnRowClick: {
+            default: false,
+            type: Boolean
+        },
+        modelName: String,
     },
     data() {
         return {
@@ -141,6 +150,12 @@ export default {
         },
         txt(obj, key) {
             return _.get(obj ,key);
+        },
+        handleRowClick(value) {
+            console.log(value);
+            if (this.redirectToEditPageOnRowClick) {
+                this.$router.push(`/admin/${this.modelName}/${value.id}`)
+            }
         }
     }
 }

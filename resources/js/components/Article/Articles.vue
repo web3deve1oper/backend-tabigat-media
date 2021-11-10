@@ -32,12 +32,11 @@
                       loading-text="Загрузка статей"
                       :headers="headers"
                       :api-includes="apiIncludes"
-                      ref="articles">
+                      ref="articles"
+                      :redirect-to-edit-page-on-row-click="true"
+                      model-name="articles"
+                      :show-select="false">
         </ApiDataTable>
-
-        <v-btn class="danger mt-4" @click="deleteArticles">
-            Удалить
-        </v-btn>
     </div>
 </template>
 

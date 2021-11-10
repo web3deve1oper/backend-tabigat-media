@@ -82,6 +82,30 @@
                             ></v-simple-checkbox>
                         </v-col>
                     </v-row>
+                    <v-row>
+                        <v-combobox
+                            v-model="article.tags"
+                            :items="existingTags"
+                            chips
+                            clearable
+                            label="Теги"
+                            multiple
+                            prepend-icon="mdi-filter-variant"
+                            solo
+                        >
+                            <template v-slot:selection="{ attrs, item, select, selected }">
+                                <v-chip
+                                    v-bind="attrs"
+                                    :input-value="selected"
+                                    close
+                                    @click="select"
+                                    @click:close="removeTag(item)"
+                                >
+                                    <strong>#{{ item }}</strong>&nbsp;
+                                </v-chip>
+                            </template>
+                        </v-combobox>
+                    </v-row>
                 </v-card>
             </v-tab-item>
             <v-tab-item>
@@ -169,9 +193,11 @@ export default {
         this.$store.commit('changeHeaderText', 'Создать статью')
         this.getAuthors()
         this.getRubrics()
+        this.getTags()
     },
     data() {
         return {
+            existingTags: [],
             imgSrc: '',
             cropImg: '',
             data: null,
@@ -188,7 +214,8 @@ export default {
                 posted: false,
                 content: '',
                 preview_image: '',
-                is_long_read: false
+                is_long_read: false,
+                tags: []
             },
             rubrics: [],
             tab: null,
@@ -229,7 +256,7 @@ export default {
         },
         getRubrics() {
             this.$http.get('/api/rubrics')
-                .then(res=> {
+                .then(res => {
                     this.rubrics = res.data.data.data;
                 })
         },
@@ -282,7 +309,20 @@ export default {
 
                 formData.append(parentKey, value);
             }
-        }
+        },
+        getTags() {
+            this.$http('/api/tags')
+                .then(res => {
+                    this.existingTags = res.data.data.map(a => a.name);
+                })
+                .catch(err => {
+
+                })
+        },
+        removeTag(item) {
+            this.article.tags.splice(this.article.tags.indexOf(item), 1)
+            this.article.tags = [...this.article.tags]
+        },
     }
 }
 </script>

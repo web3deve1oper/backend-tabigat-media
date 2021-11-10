@@ -28,6 +28,10 @@ class Article extends Model
         'preview_image_url'
     ];
 
+    protected $with = [
+        'tags'
+    ];
+
     protected $casts = [
         'staff' => 'array',
         'posted_at' => 'date:Y-m-d',
@@ -52,16 +56,34 @@ class Article extends Model
             ->orWhere('content', 'LIKE', "%$search$%")
             ->orWhere('title', 'LIKE', "%$search%")
             ->orWhere('description', 'LIKE', "%$search%")
-            ->orWhereHas('author',function ($q) use ($search) {
+            ->orWhereHas('author', function ($q) use ($search) {
                 $q->where('full_name', 'LIKE', "%$search%");
             })
             ->orWhereHas('rubric', function ($q) use ($search) {
-                $q->where('title','LIKE', "%$search%");
+                $q->where('title', 'LIKE', "%$search%");
+            })
+            ->orWhereHas('tags', function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%$search%");
             });
     }
 
     protected function makeAllSearchableUsing($query)
     {
         return $query->with('author', 'rubric');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+    public function scopeRecommendedArticles(Builder $query)
+    {
+        $query->whereHas('tags', function ($q) {
+            $relatedTags = $this->tags()->get();
+            foreach ($relatedTags as $tag) {
+                $q->orWhere('name', $tag->name);
+            }
+        });
     }
 }

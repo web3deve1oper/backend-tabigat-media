@@ -19,7 +19,6 @@ class CreateRubricsTable extends Migration
             $table->boolean('is_preferable')->default(false);
             $table->boolean('is_visible')->default(true);
             $table->integer('order')->nullable();
-            $table->string('type')->default('default-view');
             $table->timestamps();
         });
     }

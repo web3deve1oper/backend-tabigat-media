@@ -31,23 +31,53 @@ Route::get('docs', function () {
 
 Route::post('admin-login', [\App\Http\Controllers\AuthController::class, 'adminLogin']);
 
-Route::get('rubrics', [\App\Http\Controllers\Api\RubricsController::class, 'index']);
-Route::get('authors', [\App\Http\Controllers\Api\AuthorsController::class, 'index']);
-
+Route::get('/random-articles', [\App\Http\Controllers\Api\ArticlesController::class, 'getRandomArticles']);
 Route::group(['prefix' => 'articles'], function () {
     Route::get('', [\App\Http\Controllers\Api\ArticlesController::class, 'index']);
-    Route::get('{article}/edit', [\App\Http\Controllers\Api\ArticlesController::class, 'edit']);
+    Route::get('{article}', [\App\Http\Controllers\Api\ArticlesController::class, 'edit']);
+    Route::get('{article}/recommended-articles',
+        [\App\Http\Controllers\Api\ArticlesController::class, 'getRecommendedArticles']);
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('upload-temp-image', [\App\Http\Controllers\Admin\ArticleController::class, 'uploadTempImage']);
         Route::post('create', [\App\Http\Controllers\Admin\ArticleController::class, 'create']);
         Route::post('{article}/update', [\App\Http\Controllers\Admin\ArticleController::class, 'update']);
-        Route::delete('', [\App\Http\Controllers\Admin\ArticleController::class, 'delete']);
+        Route::delete('{article}', [\App\Http\Controllers\Admin\ArticleController::class, 'delete']);
     });
 });
 
-Route::group(['prefix' => 'rubrics', 'middleware' => ['auth:sanctum', 'scopes:admin-actions']], function () {
-    Route::post('edit-info', [\App\Http\Controllers\Admin\RubricsController::class, 'editInfo']);
-    Route::post('upsert', [\App\Http\Controllers\Admin\RubricsController::class, 'upsert']);
-    Route::delete('', [\App\Http\Controllers\Admin\RubricsController::class, 'delete']);
+Route::group(['prefix' => 'rubrics'], function () {
+    Route::get('', [\App\Http\Controllers\Api\RubricsController::class, 'index']);
+
+    Route::group(['middleware' => ['auth:sanctum', 'scopes:admin-actions']], function () {
+        Route::post('edit-info', [\App\Http\Controllers\Admin\RubricsController::class, 'editInfo']);
+        Route::post('upsert', [\App\Http\Controllers\Admin\RubricsController::class, 'upsert']);
+        Route::delete('', [\App\Http\Controllers\Admin\RubricsController::class, 'delete']);
+    });
+});
+
+Route::group(['prefix' => 'red-book'], function () {
+    Route::get('', [\App\Http\Controllers\Api\RedBookController::class, 'index']);
+    Route::get('{specie}', [\App\Http\Controllers\Api\RedBookController::class, 'edit']);
+
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+        Route::post('create', [\App\Http\Controllers\Admin\RedBookController::class, 'create']);
+        Route::post('{specie}/update', [\App\Http\Controllers\Admin\RedBookController::class, 'update']);
+        Route::delete('{specie}', [\App\Http\Controllers\Admin\RedBookController::class, 'delete']);
+    });
+});
+
+Route::group(['prefix' => 'authors'], function () {
+    Route::get('', [\App\Http\Controllers\Api\AuthorsController::class, 'index']);
+    Route::get('{author}', [\App\Http\Controllers\Api\AuthorsController::class, 'edit']);
+
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+        Route::post('create', [\App\Http\Controllers\Admin\AuthorController::class, 'create']);
+        Route::post('{author}/update', [\App\Http\Controllers\Admin\AuthorController::class, 'update']);
+        Route::delete('{author}', [\App\Http\Controllers\Admin\AuthorController::class, 'delete']);
+    });
+});
+
+Route::group(['prefix' => 'tags'], function () {
+    Route::get('', [\App\Http\Controllers\Api\TagController::class, 'index']);
 });

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Article;
 use App\Models\Author;
+use App\Models\RedBook;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,5 +19,6 @@ class DatabaseSeeder extends Seeder
          \App\Models\Rubric::factory(10)->create();
         Author::factory(10)->create();
         Article::factory(500)->create();
+        RedBook::factory(10)->create();
     }
 }

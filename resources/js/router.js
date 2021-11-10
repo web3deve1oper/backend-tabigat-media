@@ -8,6 +8,13 @@ import Rubric from "./components/Rubric/Rubric";
 import Articles from "./components/Article/Articles";
 import CreateArticle from "./components/Article/CreateArticle";
 import UpdateArticle from "./components/Article/UpdateArticle";
+import RedBook from "./components/Red-book/RedBook";
+import RedBookCreate from "./components/Red-book/RedBookCreate";
+import RedBookUpdate from "./components/Red-book/RedBookUpdate";
+import Authors from "./components/Author/Authors";
+import PageNotFound from "./components/PageNotFound";
+import CreateAuthor from "./components/Author/CreateAuthor";
+import UpdateAuthor from "./components/Author/UpdateAuthor";
 
 Vue.use(VueRouter);
 
@@ -59,7 +66,57 @@ const router = new VueRouter({
             meta: {
                 middleware: [auth]
             }
-        }
+        },
+        {
+            path: '/admin/red-book',
+            name: 'red-book',
+            component: RedBook,
+            meta: {
+                middleware: [auth]
+            }
+        },
+        {
+            path: '/admin/red-book-create',
+            name: 'red-book-create',
+            component: RedBookCreate,
+            meta: {
+                middleware: [auth]
+            }
+        },
+        {
+            path: '/admin/red-book/:id',
+            name: 'update-red-book',
+            component: RedBookUpdate,
+            meta: {
+                middleware: [auth]
+            }
+        },
+        {
+            path: '/admin/authors',
+            name: 'authors',
+            component: Authors,
+            meta: {
+                middleware: [auth]
+            }
+        },
+        {
+            path: '/admin/authors/create',
+            name: 'create-author',
+            component: CreateAuthor,
+            meta: {
+                middleware: [auth]
+            }
+        },
+        {
+            path: '/admin/authors/:id',
+            name: 'update-author',
+            component: UpdateAuthor,
+            meta: {
+                middleware: [auth]
+            }
+        },
+        {path: "*", component: PageNotFound}
+
     ]
 });
 
