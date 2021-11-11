@@ -75,9 +75,9 @@
                         </v-row>
                         <v-row>
                             <v-text-field
-                                v-model="specie.domain"
+                                v-model="specie.kingdom"
                                 counter="255"
-                                label="Домен"
+                                label="Царство"
                                 clearable
                             ></v-text-field>
                         </v-row>
@@ -125,6 +125,14 @@
                             <v-text-field
                                 v-model="specie.kind"
                                 label="Вид"
+                                counter="255"
+                                clearable
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                v-model="specie.subkind"
+                                label="Подвид"
                                 counter="255"
                                 clearable
                             ></v-text-field>
@@ -210,9 +218,8 @@
                                 key="big"
                                 :min-crop-box-height="600"
                                 :min-crop-box-width="1200"
-                                :aspect-ratio="285/180"
+                                :aspect-ratio="1200/600"
                                 label="Выберите картинку с большим размером"
-                                :rules="notEmptyRule"
                     />
 
                     <crop-image ref="cropperSmall"
@@ -220,10 +227,9 @@
                                 key="small"
                                 label="Выберите картинку с меньшим размером"
                                 :dialog-max-width="700"
-                                :min-crop-box-height="387"
-                                :min-crop-box-width="394"
-                                :aspect-ratio="387/394"
-                                :rules="notEmptyRule"/>
+                                :min-crop-box-height="340"
+                                :min-crop-box-width="285"
+                                :aspect-ratio="285/340"/>
                 </v-tab-item>
                 <v-tab-item>
                     <v-card>

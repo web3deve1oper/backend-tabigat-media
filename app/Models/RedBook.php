@@ -15,13 +15,14 @@ class RedBook extends Model
     protected $fillable = [
         'name',
         'name_latin',
-        'domain',
+        'kingdom',
         'type',
         'class',
         'squad',
         'family',
         'genus',
         'kind',
+        'subkind',
         'content',
         'status',
         'facts',
@@ -42,12 +43,13 @@ class RedBook extends Model
             ->orWhere('content', 'LIKE', "%$search$%")
             ->orWhere('name', 'LIKE', "%$search%")
             ->orWhere('name_latin', 'LIKE', "%$search%")
-            ->orWhere('domain', 'LIKE', "%$search%")
+            ->orWhere('kingdom', 'LIKE', "%$search%")
             ->orWhere('type', 'LIKE', "%$search%")
             ->orWhere('class', 'LIKE', "%$search%")
             ->orWhere('family', 'LIKE', "%$search%")
             ->orWhere('genus', 'LIKE', "%$search%")
             ->orWhere('kind', 'LIKE', "%$search%")
+            ->orWhere('subkind', 'LIKE', "%$search%")
             ->orWhere('squad', 'LIKE', "%$search%");
     }
 }

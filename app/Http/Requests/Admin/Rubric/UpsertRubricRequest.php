@@ -24,8 +24,9 @@ class UpsertRubricRequest extends FormRequest
     public function rules()
     {
         return [
-            'rubric.title' => 'string|unique:rubrics,title',
-            'rubric.order' => 'integer|unique:rubrics,order'
+            'rubric.title' => 'required|string|unique:rubrics,title',
+            'rubric.slug' => 'required|string|unique:rubrics,slug',
+            'rubric.order' => 'required|integer|unique:rubrics,order'
         ];
     }
 }

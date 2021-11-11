@@ -41,6 +41,16 @@
                                 cols="12"
                             >
                                 <v-text-field
+                                    v-model="dialogRubric.slug"
+                                    label="Slug"
+                                    :rules="[value => !!value || 'Обязательное поле']"
+                                    :error-messages="slugError"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col
+                                cols="12"
+                            >
+                                <v-text-field
                                     v-model="dialogRubric.description"
                                     label="Описание"
                                     :counter="254"
@@ -134,6 +144,8 @@ export default {
             ],
             orderError: null,
             titleError: null,
+            slugError: null,
+            descriptionError: null,
             dialogType: '',
             dialogRubric: {is_preferable: true, is_visible: true},
             dialog: false,
@@ -146,6 +158,11 @@ export default {
                 {
                     text: 'Название',
                     value: 'title',
+                    type: 'edit-text-field'
+                },
+                {
+                    text: 'Слаг',
+                    value: 'slug',
                     type: 'edit-text-field'
                 },
                 {
@@ -204,6 +221,8 @@ export default {
             this.dialogType = '';
             this.orderError = null;
             this.titleError = null;
+            this.slugError = null;
+            this.descriptionError = null;
         },
         submitDialog() {
             this.titleError = null;
@@ -223,6 +242,10 @@ export default {
 
                     if ('rubric.title' in err.response.data.errors) {
                         this.titleError = 'Должен быть уникальным';
+                    }
+
+                    if ('rubric.slug' in err.response.data.errors) {
+                        this.slugError = 'Должен быть уникальным';
                     }
 
                     this.$store.commit('triggerSnack', {text: err.message, color: 'red'})

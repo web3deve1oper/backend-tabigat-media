@@ -22,7 +22,8 @@ class RubricsController extends Controller
                     'is_visible' => $rubric['is_visible'],
                     'is_preferable' => $rubric['is_preferable'],
                     'title' => $rubric['title'],
-                    'description' => $rubric['description']
+                    'description' => $rubric['description'],
+                    'slug' => $rubric['slug'],
                 ]);
         }
 
@@ -34,7 +35,7 @@ class RubricsController extends Controller
         $rubric = $request->rubric;
 
         $rubric = Rubric::updateOrCreate(
-            ['title' => $rubric['title'], 'id' => $rubric['id'] ?? 0],
+            ['slug' => $rubric['slug'], 'id' => $rubric['id'] ?? 0],
             $rubric
         );
 

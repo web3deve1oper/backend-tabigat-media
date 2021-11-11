@@ -25,7 +25,7 @@ class UpdateArticleRequest extends FormRequest
     {
         return [
             'preview_image_big' => 'image',
-            'preview_image_small' => 'required|image',
+            'preview_image_small' => 'image',
             'id' => 'exists:articles,id',
             'title' => 'required',
             'description' => 'required',

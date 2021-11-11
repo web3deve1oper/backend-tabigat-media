@@ -177,6 +177,9 @@
                                 ref="cropperBig"
                                 :value="article.preview_image_big"
                                 key="big"
+                                :min-crop-box-height="400"
+                                :min-crop-box-width="1200"
+                                :aspect-ratio="3"
                                 label="Выберите картинку с большим размером"
                                 :rules="notEmptyRule"
                     />
@@ -186,11 +189,9 @@
                                 key="small"
                                 label="Выберите картинку с меньшим размером"
                                 :dialog-max-width="700"
-                                :max-width="570"
-                                :max-height="360"
-                                :min-crop-box-height="285"
-                                :min-crop-box-width="180"
-                                :aspect-ratio="285/180"
+                                :min-crop-box-height="300"
+                                :min-crop-box-width="600"
+                                :aspect-ratio="2"
                                 :rules="notEmptyRule"/>
                 </v-tab-item>
                 <v-tab-item>

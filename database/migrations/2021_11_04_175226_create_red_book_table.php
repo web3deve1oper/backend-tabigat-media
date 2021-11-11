@@ -19,13 +19,14 @@ class CreateRedBookTable extends Migration
             $table->string('name_latin')->nullable();
             $table->string('description')->nullable();
             $table->string('slug')->nullable();
-            $table->string('domain')->nullable();
+            $table->string('kingdom')->nullable();
             $table->string('type')->nullable();
             $table->string('class')->nullable();
             $table->string('squad')->nullable();
             $table->string('family')->nullable();
             $table->string('genus')->nullable();
             $table->string('kind')->nullable();
+            $table->string('subkind')->nullable();
             $table->text('content')->nullable();
             $table->json('status')->nullable();
             $table->json('facts')->nullable();

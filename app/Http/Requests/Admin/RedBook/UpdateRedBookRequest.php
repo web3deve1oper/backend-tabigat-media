@@ -24,8 +24,8 @@ class UpdateRedBookRequest extends FormRequest
     public function rules()
     {
         return [
-            'preview_image_big' => 'required|image',
-            'preview_image_small' => 'required|image',
+            'preview_image_big' => 'image',
+            'preview_image_small' => 'image',
             'id' => 'required|exists:red_book,id',
             'name' => 'required',
             'name_latin' => 'required',

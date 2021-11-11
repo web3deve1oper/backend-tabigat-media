@@ -26,7 +26,8 @@ class EditRubricInfoRequest extends FormRequest
         return [
             'rubrics' => 'array',
             'rubrics.*.order' => 'distinct',
-            'rubric.*.title' => 'required|string'
+            'rubric.*.title' => 'required|string',
+            'rubric.*.slug' => 'required|string|distinct'
         ];
     }
 }
