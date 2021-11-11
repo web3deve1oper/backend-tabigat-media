@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Redbook\CreateRedbookSpecieRequest;
+use App\Http\Requests\Admin\RedBook\CreateRedBookRequest;
 use App\Http\Requests\Admin\RedBook\UpdateRedBookRequest;
 use App\Models\RedBook;
 use Illuminate\Http\Request;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class RedBookController extends Controller
 {
-    public function create(CreateRedbookSpecieRequest $request)
+    public function create(CreateRedBookRequest $request)
     {
         $specie = $request->all();
 

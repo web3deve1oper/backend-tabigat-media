@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin\RedBook;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateRedbookSpecieRequest extends FormRequest
+class CreateRedBookRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class CreateRedbookSpecieRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
