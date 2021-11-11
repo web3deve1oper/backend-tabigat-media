@@ -26,7 +26,7 @@ class UpdateRedBookRequest extends FormRequest
         return [
             'preview_image_big' => 'required|image',
             'preview_image_small' => 'required|image',
-            'id' => 'required|exists:articles,id',
+            'id' => 'required|exists:red_book,id',
             'name' => 'required',
             'name_latin' => 'required',
             'slug' => 'required'
