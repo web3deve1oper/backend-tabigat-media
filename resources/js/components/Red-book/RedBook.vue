@@ -72,8 +72,8 @@ export default {
 
                 },
                 {
-                    text: 'Домен',
-                    value: 'domain',
+                    text: 'Царство',
+                    value: 'kingdom',
                     type: 'text',
                     sortable: false
 
@@ -118,7 +118,12 @@ export default {
                     value: 'kind',
                     type: 'text',
                     sortable: false
-
+                },
+                {
+                    text: 'Подвид',
+                    value: 'subkind',
+                    type: 'text',
+                    sortable: false
                 }
             ]
         }
