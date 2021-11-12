@@ -27,6 +27,7 @@ class ArticlesController extends Controller
                 AllowedFilter::scope('search', 'global_search'),
                 AllowedFilter::exact('rubric.order', null),
                 AllowedFilter::exact('id'),
+                AllowedFilter::exact('rubric.id'),
                 AllowedFilter::callback('posted', function ($query, $value) {
                     $query->whereNotNull('posted_at');
                 }),
