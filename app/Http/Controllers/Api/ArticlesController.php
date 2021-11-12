@@ -31,7 +31,7 @@ class ArticlesController extends Controller
                     $query->whereNotNull('posted_at');
                 }),
                 AllowedFilter::exact('tags.name', null),
-                AllowedFilter::callback('favourite', function($query, $value) {
+                AllowedFilter::callback('favourite', function ($query, $value) {
                     $query->where('is_favourite', $value);
                 })
             ])
@@ -51,7 +51,8 @@ class ArticlesController extends Controller
         $articles = QueryBuilder::for(Article::class)
             ->inRandomOrder()
             ->allowedIncludes([
-                AllowedInclude::relationship('rubric')
+                AllowedInclude::relationship('rubric'),
+                AllowedInclude::relationship('author')
             ])
             ->allowedFilters([
                 AllowedFilter::callback('posted', function ($query, $value) {
@@ -66,10 +67,22 @@ class ArticlesController extends Controller
 
     public function getRecommendedArticles(Article $article)
     {
-        $articles = Article::recommendedArticles()
-            ->limit(request('itemsPerPage') ?? 15)
-            ->where('id', '!=', $article->id)
+        $articles = QueryBuilder::for(Article::class)
+            ->allowedFilters([
+                AllowedFilter::exact('rubric.id'),
+                AllowedFilter::callback('posted', function ($query, $value) {
+                    $query->whereNotNull('posted_at');
+                })
+            ])
+            ->allowedIncludes([
+                AllowedInclude::relationship('author'),
+                AllowedInclude::relationship('rubric'),
+            ])
+            ->recommendedArticles()
+            ->limit(\request('itemsPerPage') ?? 15)
+            ->where('id', '!=',$article->id)
             ->get();
+
 
         return $this->apiResponse($articles);
     }
