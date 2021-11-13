@@ -44,7 +44,8 @@ Route::group(['prefix' => 'articles'], function () {
         Route::post('{article}/update', [\App\Http\Controllers\Admin\ArticleController::class, 'update']);
         Route::delete('{article}', [\App\Http\Controllers\Admin\ArticleController::class, 'delete']);
         Route::post('add-favourite/{article}', [\App\Http\Controllers\Admin\ArticleController::class, 'addFavourite']);
-        Route::post('delete-favourite/{article}', [\App\Http\Controllers\Admin\ArticleController::class, 'deleteFavourite']);
+        Route::post('delete-favourite/{article}',
+            [\App\Http\Controllers\Admin\ArticleController::class, 'deleteFavourite']);
     });
 });
 
@@ -83,3 +84,19 @@ Route::group(['prefix' => 'authors'], function () {
 Route::group(['prefix' => 'tags'], function () {
     Route::get('', [\App\Http\Controllers\Api\TagController::class, 'index']);
 });
+
+Route::group(['prefix' => 'feedbacks'], function () {
+    Route::post('create', [\App\Http\Controllers\Api\FeedbackController::class, 'submitFeedback']);
+
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+        Route::get('', [\App\Http\Controllers\Api\FeedbackController::class, 'index']);
+        Route::delete('', [\App\Http\Controllers\Admin\FeedbackController::class, 'delete']);
+    });
+});
+
+Route::group(['prefix' => 'mailings', 'middleware' => ['auth:sanctum']], function () {
+    Route::get('', [\App\Http\Controllers\Admin\MailingController::class, 'index']);
+    Route::delete('', [\App\Http\Controllers\Admin\MailingController::class, 'delete']);
+    Route::post('send', [\App\Http\Controllers\Admin\MailingController::class, 'sendMailing']);
+});
+

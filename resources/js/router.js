@@ -16,6 +16,9 @@ import PageNotFound from "./components/PageNotFound";
 import CreateAuthor from "./components/Author/CreateAuthor";
 import UpdateAuthor from "./components/Author/UpdateAuthor";
 import FavouriteArticles from "./components/Article/FavouriteArticles";
+import Feedbacks from "./components/Feedback/Feedbacks";
+import Mailing from "./components/Mailing/Mailing";
+import SubmitMailing from "./components/Mailing/SubmitMailing";
 
 Vue.use(VueRouter);
 
@@ -123,6 +126,31 @@ const router = new VueRouter({
             meta: {
                 middleware: [auth]
             }
+        },
+        {
+            path: '/admin/feedbacks',
+            name: 'feedbacks',
+            component: Feedbacks,
+            meta: {
+                middleware: [auth]
+            }
+        },
+        {
+            path: '/admin/mailings',
+            name: 'mailings',
+            component: Mailing,
+            meta: {
+                middleware: [auth]
+            }
+        },
+        {
+            path: '/admin/mailings/send-mailing',
+            name: 'send-mailing',
+            component: SubmitMailing,
+            meta: {
+                middleware: [auth],
+            }
+
         },
         {path: "*", component: PageNotFound}
 

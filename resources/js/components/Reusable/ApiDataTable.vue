@@ -11,6 +11,8 @@
             class="elevation-5"
             :loading-text="loadingText"
             item-key="id"
+            no-results-text="Нету данных"
+            no-data-text="Пока нету данных"
             :footer-props="{'items-per-page-options': [15, 30, 50, 100]}"
         >
             <template v-slot:body="props">
