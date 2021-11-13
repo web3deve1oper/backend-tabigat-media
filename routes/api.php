@@ -94,9 +94,13 @@ Route::group(['prefix' => 'feedbacks'], function () {
     });
 });
 
-Route::group(['prefix' => 'mailings', 'middleware' => ['auth:sanctum']], function () {
-    Route::get('', [\App\Http\Controllers\Admin\MailingController::class, 'index']);
-    Route::delete('', [\App\Http\Controllers\Admin\MailingController::class, 'delete']);
-    Route::post('send', [\App\Http\Controllers\Admin\MailingController::class, 'sendMailing']);
+Route::group(['prefix' => 'mailings'], function () {
+    Route::post('subscribe', [\App\Http\Controllers\Api\MailingController::class, 'subscribe']);
+
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+        Route::get('', [\App\Http\Controllers\Admin\MailingController::class, 'index']);
+        Route::delete('', [\App\Http\Controllers\Admin\MailingController::class, 'delete']);
+        Route::post('send', [\App\Http\Controllers\Admin\MailingController::class, 'sendMailing']);
+    });
 });
 
