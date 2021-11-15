@@ -193,6 +193,13 @@
                                 :min-crop-box-width="600"
                                 :aspect-ratio="2"
                                 :rules="notEmptyRule"/>
+
+                    <v-text-field
+                        class="ml-10 mr-10"
+                        v-model="article.photography"
+                        label="Автор фотографии"
+                        clearable
+                    ></v-text-field>
                 </v-tab-item>
                 <v-tab-item>
                     <v-card>
