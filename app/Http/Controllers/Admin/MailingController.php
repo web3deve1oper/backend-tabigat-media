@@ -38,6 +38,8 @@ class MailingController extends Controller
     {
         $data = $request->all();
 
-        Mail::to(['eabilbay@gmail.com'])->send(new BasicMail($data['body'], $data['title'] ?? '', $data['article']), $data['subject']);
+        $emails = Mailing::all()->pluck('email');
+
+        Mail::to($emails)->send(new BasicMail($data['body'], $data['title'] ?? '', $data['article']), $data['subject']);
     }
 }

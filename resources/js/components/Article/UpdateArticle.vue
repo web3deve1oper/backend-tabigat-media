@@ -205,11 +205,13 @@
                 </v-tab-item>
                 <v-tab-item>
                     <v-card>
-                        <vue-editor v-model="article.content"
-                                    useCustomImageHandler
-                                    @image-added="handleImageAdded"
-                                    id="contentEditor"
-                        ></vue-editor>
+                        <vue-editor
+                            v-model="article.content"
+                            useCustomImageHandler
+                            @image-added="handleImageAdded"
+                            id="contentEditor"
+                        >
+                        </vue-editor>
                     </v-card>
                 </v-tab-item>
             </v-form>
