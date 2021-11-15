@@ -38,6 +38,14 @@
                             counter="255"
                             clearable
                         ></v-text-field>
+                    </v-row><v-row>
+                        <v-text-field
+                            v-model="author.slug"
+                            label="Slug"
+                            :rules="notEmptyRule"
+                            counter="255"
+                            clearable
+                        ></v-text-field>
                     </v-row>
                 </v-card>
             </v-tab-item>
@@ -78,7 +86,8 @@ export default {
             author: {
                 full_name: '',
                 biography: '',
-                preview_image: ''
+                preview_image: '',
+                slug: ''
             },
             tab: null,
             tabs: [

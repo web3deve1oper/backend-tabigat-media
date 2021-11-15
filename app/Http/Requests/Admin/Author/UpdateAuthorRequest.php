@@ -25,9 +25,10 @@ class UpdateAuthorRequest extends FormRequest
     {
         return [
             'preview_image' => 'image',
-            'id' => 'required|exists:articles,id',
+            'id' => 'required|exists:authors,id',
             'full_name' => 'required',
-            'biography' => 'required'
+            'biography' => 'required',
+            'slug' => 'required|unique:authors'
         ];
     }
 }

@@ -26,7 +26,8 @@ class CreateAuthorRequest extends FormRequest
         return [
             'preview_image' => 'required|image',
             'full_name' => 'required',
-            'biography' => 'required'
+            'biography' => 'required',
+            'slug' => 'required|unique:authors'
         ];
     }
 }

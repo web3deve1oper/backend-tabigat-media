@@ -59,6 +59,9 @@ export default {
         }
     },
     mounted() {
+        if (this.$store.state.isAuth) {
+            this.$router.push('/admin/about')
+        }
         this.$store.commit('changeHeaderText', 'Авторизуйтесь прежде чем, использовать панель администратора!')
     },
     data: () => ({

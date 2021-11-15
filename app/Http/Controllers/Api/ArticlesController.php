@@ -26,6 +26,7 @@ class ArticlesController extends Controller
 //                    AllowedFilter::custom('search', new AlgoliaSearchFilter),
                 AllowedFilter::scope('search', 'global_search'),
                 AllowedFilter::exact('rubric.order', null),
+                AllowedFilter::exact('author.id', null),
                 AllowedFilter::exact('id'),
                 AllowedFilter::exact('rubric.id'),
                 AllowedFilter::callback('posted', function ($query, $value) {
@@ -81,7 +82,7 @@ class ArticlesController extends Controller
             ])
             ->recommendedArticles()
             ->limit(\request('itemsPerPage') ?? 15)
-            ->where('id', '!=',$article->id)
+            ->where('id', '!=', $article->id)
             ->get();
 
 

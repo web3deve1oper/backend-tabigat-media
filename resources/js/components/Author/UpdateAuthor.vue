@@ -42,6 +42,15 @@
                             clearable
                         ></v-text-field>
                     </v-row>
+                    <v-row>
+                        <v-text-field
+                            v-model="author.slug"
+                            label="Slug"
+                            :rules="notEmptyRule"
+                            counter="255"
+                            clearable
+                        ></v-text-field>
+                    </v-row>
                 </v-card>
             </v-tab-item>
             <v-tab-item>
@@ -123,7 +132,8 @@ export default {
             author: {
                 full_name: '',
                 biography: '',
-                preview_image: ''
+                preview_image: '',
+                slug: ''
             },
             tab: null,
             tabs: [
@@ -201,7 +211,7 @@ export default {
             this.$http.get(`/api/authors/${this.$route.params.id}`)
                 .then(res => {
                     this.author = res.data.data;
-                    this.$store.commit('changeHeaderText', 'Изменить автора: ' + this.author.name)
+                    this.$store.commit('changeHeaderText', 'Изменить автора: ' + this.author.full_name)
                     this.overlay = false;
                 })
                 .catch(res => {

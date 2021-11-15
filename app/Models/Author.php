@@ -13,7 +13,8 @@ class Author extends Model
     protected $fillable = [
         'full_name',
         'biography',
-        'preview_image_url'
+        'preview_image_url',
+        'slug'
     ];
 
     protected $casts = [
@@ -30,6 +31,7 @@ class Author extends Model
     {
         return $query->where('id', $search)
             ->orWhere('full_name', 'LIKE', "%$search%")
+            ->orWhere('slug', 'LIKE', "%$search%")
             ->orWhere('biography', 'LIKE', "%$search%");
     }
 }
