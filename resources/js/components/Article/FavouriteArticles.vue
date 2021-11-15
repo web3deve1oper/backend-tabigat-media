@@ -48,7 +48,7 @@
                         scrollable
                     >
                         <template v-slot:activator="{ on, attrs }">
-                            <v-row class="ml-auto mt-auto mb-auto">
+                            <v-row align-content="center" justify="center">
                                 <v-icon dense v-bind="attrs" v-on="on" size="350px" color="#E3DDDC">mdi-plus</v-icon>
                             </v-row>
                         </template>
