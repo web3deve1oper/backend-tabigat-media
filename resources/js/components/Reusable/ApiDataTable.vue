@@ -77,9 +77,14 @@
                             </template>
                         </v-edit-dialog>
 
-                        <span v-if="header.type==='text'">
-                        {{ txt(it, header.value) }}
-                    </span>
+                        <v-tooltip bottom v-if="header.type==='text'">
+                            <template v-slot:activator="{ on, attrs }">
+                                <span v-on="on" v-bind="attrs" class="text-cut">
+                                    {{ txt(it, header.value) }}
+                                </span>
+                            </template>
+                            <span>{{txt(it,header.value)}}</span>
+                        </v-tooltip>
                     </td>
                 </tr>
                 </tbody>
@@ -151,7 +156,7 @@ export default {
             });
         },
         txt(obj, key) {
-            return _.get(obj ,key);
+            return _.get(obj, key);
         },
         handleRowClick(value) {
             console.log(value);
@@ -164,5 +169,12 @@ export default {
 </script>
 
 <style scoped>
-
+.text-cut {
+    height: 42px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
 </style>

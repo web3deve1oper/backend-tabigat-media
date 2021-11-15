@@ -23,7 +23,10 @@ class Rubric extends Model
     protected $casts = [
         'is_red_book' => 'boolean',
         'is_preferable' => 'boolean',
-        'is_visible' => 'boolean'
+        'is_visible' => 'boolean',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+
     ];
 
     const TYPES = [
