@@ -27,7 +27,6 @@ class SubmitFeedbackRequest extends FormRequest
             'full_name' => 'string|required',
             'email' => 'email|required',
             'type' => 'string',
-            'message' => 'string',
         ];
     }
 }
