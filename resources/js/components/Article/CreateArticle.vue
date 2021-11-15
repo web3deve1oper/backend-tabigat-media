@@ -325,6 +325,10 @@ export default {
         },
         saveArticle() {
             if (!this.$refs.form.validate()) {
+                this.$store.commit('triggerSnack', {
+                    text: 'Перепроверьте данные, некоторые поля пустые',
+                    color: 'orange'
+                })
                 return;
             }
 
