@@ -102,4 +102,27 @@ class ArticlesController extends Controller
 
         return $this->apiResponse($articles);
     }
+
+    public function getDailyArticle()
+    {
+        $article = QueryBuilder::for(Article::class)
+            ->allowedIncludes([
+                AllowedInclude::relationship('author'),
+                AllowedInclude::relationship('rubric'),
+            ])
+            ->where('is_daily', 1)
+            ->first();
+
+        if (!$article) {
+            $article = QueryBuilder::for(Article::class)
+                ->allowedIncludes([
+                    AllowedInclude::relationship('author'),
+                    AllowedInclude::relationship('rubric'),
+                ])
+                ->orderBy('created_at', 'DESC')
+                ->first();
+        }
+
+        return $this->apiResponse($article);
+    }
 }

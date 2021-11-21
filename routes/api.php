@@ -32,6 +32,7 @@ Route::get('docs', function () {
 Route::post('admin-login', [\App\Http\Controllers\AuthController::class, 'adminLogin']);
 
 Route::get('/random-articles', [\App\Http\Controllers\Api\ArticlesController::class, 'getRandomArticles']);
+Route::get('/daily-article', [\App\Http\Controllers\Api\ArticlesController::class, 'getDailyArticle']);
 Route::group(['prefix' => 'articles'], function () {
     Route::get('', [\App\Http\Controllers\Api\ArticlesController::class, 'index']);
     Route::get('{article}', [\App\Http\Controllers\Api\ArticlesController::class, 'edit']);
