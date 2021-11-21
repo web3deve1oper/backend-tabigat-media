@@ -118,7 +118,6 @@ export default {
             this.dialog = false;
             this.$http.post(`/api/articles/add-daily/${this.chosenArticle.id}`)
                 .then(res => {
-                    console.log(res.data.data);
                     this.daily = res.data.data;
                     this.$store.commit('triggerSnack', {text: 'Дневная статья добавлена', color: 'green'})
                     this.chosenArticle = null;
@@ -133,7 +132,6 @@ export default {
         deleteDaily() {
             this.$http.post(`/api/articles/delete-daily/${this.daily.id}`)
                 .then(res => {
-                    console.log(res)
                     this.daily = null;
                     this.$store.commit('triggerSnack', {text: 'Статья дня удалена', color: 'green'})
                     this.getArticles();
