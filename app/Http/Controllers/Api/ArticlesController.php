@@ -35,6 +35,12 @@ class ArticlesController extends Controller
                 AllowedFilter::exact('tags.name', null),
                 AllowedFilter::callback('favourite', function ($query, $value) {
                     $query->where('is_favourite', $value);
+                }),
+                AllowedFilter::callback('daily', function ($query, $value) {
+                    $query->where('is_daily', $value);
+                }),
+                AllowedFilter::callback('id_not', function ($query, $value) {
+                    $query->where('id', '!=', $value);
                 })
             ])
             ->allowedSorts('id', 'views', 'read_time', 'created_at', 'posted_at', 'updated_at')
@@ -52,6 +58,7 @@ class ArticlesController extends Controller
     {
         $articles = QueryBuilder::for(Article::class)
             ->inRandomOrder()
+            ->allowedSorts('id', 'views', 'read_time', 'created_at', 'posted_at', 'updated_at')
             ->allowedIncludes([
                 AllowedInclude::relationship('rubric'),
                 AllowedInclude::relationship('author')
@@ -59,6 +66,9 @@ class ArticlesController extends Controller
             ->allowedFilters([
                 AllowedFilter::callback('posted', function ($query, $value) {
                     $query->whereNotNull('posted_at');
+                }),
+                AllowedFilter::callback('id_not', function ($query, $value) {
+                    $query->where('id', '!=', $value);
                 })
             ])
             ->limit(request('itemsPerPage') ?? 8)
@@ -74,6 +84,10 @@ class ArticlesController extends Controller
                 AllowedFilter::exact('rubric.id'),
                 AllowedFilter::callback('posted', function ($query, $value) {
                     $query->whereNotNull('posted_at');
+                }),
+
+                AllowedFilter::callback('id_not', function ($query, $value) {
+                    $query->where('id', '!=', $value);
                 })
             ])
             ->allowedIncludes([

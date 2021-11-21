@@ -22,6 +22,14 @@
                     >
                         Избранные статьи
                     </v-btn>
+                    <v-btn
+                        color="green"
+                        class="mt-2"
+                        dark
+                        @click="$router.push({name:'daily-article'})"
+                    >
+                        Статья дня
+                    </v-btn>
                 </v-col>
                 <v-col>
                     <v-text-field

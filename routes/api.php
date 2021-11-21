@@ -46,6 +46,9 @@ Route::group(['prefix' => 'articles'], function () {
         Route::post('add-favourite/{article}', [\App\Http\Controllers\Admin\ArticleController::class, 'addFavourite']);
         Route::post('delete-favourite/{article}',
             [\App\Http\Controllers\Admin\ArticleController::class, 'deleteFavourite']);
+        Route::post('add-daily/{article}', [\App\Http\Controllers\Admin\ArticleController::class, 'addDaily']);
+        Route::post('delete-daily/{article}',
+            [\App\Http\Controllers\Admin\ArticleController::class, 'deleteDaily']);
     });
 });
 

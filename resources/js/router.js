@@ -19,6 +19,7 @@ import FavouriteArticles from "./components/Article/FavouriteArticles";
 import Feedbacks from "./components/Feedback/Feedbacks";
 import Mailing from "./components/Mailing/Mailing";
 import SubmitMailing from "./components/Mailing/SubmitMailing";
+import DailyArticle from "./components/Article/DailyArticle";
 
 Vue.use(VueRouter);
 
@@ -75,6 +76,14 @@ const router = new VueRouter({
             path: '/admin/articles-favourite',
             name: 'favourite-articles',
             component: FavouriteArticles,
+            meta: {
+                middleware: [auth]
+            }
+        },
+        {
+            path: '/admin/article-daily',
+            name: 'daily-article',
+            component: DailyArticle,
             meta: {
                 middleware: [auth]
             }

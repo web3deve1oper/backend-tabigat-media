@@ -27,7 +27,8 @@ class Article extends Model
         'staff',
         'preview_image_big_url',
         'preview_image_small_url',
-        'is_favourite'
+        'is_favourite',
+        'is_daily'
     ];
 
     protected $with = [

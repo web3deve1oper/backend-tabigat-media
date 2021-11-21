@@ -128,4 +128,22 @@ class ArticleController extends Controller
 
         return $this->apiResponse(null);
     }
+
+    public function addDaily(Article $article)
+    {
+        $article->is_daily = true;
+        $article->save();
+
+        $article['author'] = $article->author;
+
+        return $this->apiResponse($article);
+    }
+
+    public function deleteDaily(Article $article)
+    {
+        $article->is_daily = false;
+        $article->save();
+
+        return $this->apiResponse(null);
+    }
 }
