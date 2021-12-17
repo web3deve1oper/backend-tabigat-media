@@ -297,7 +297,7 @@ export default {
     data() {
         return {
             validForm: true,
-            tab: 3,
+            tab: null,
             overlay: true,
             specie: {
                 facts: [],
@@ -400,6 +400,7 @@ export default {
                     this.specie = res.data.data;
                     this.$store.commit('changeHeaderText', 'Изменить вид: ' + this.specie.name)
                     this.overlay = false;
+                    this.tab = 3;
                 })
                 .catch(err => {
                     this.$router.push('/admin/red-book');

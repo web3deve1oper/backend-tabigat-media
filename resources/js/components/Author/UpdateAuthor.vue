@@ -131,7 +131,7 @@ export default {
                 preview_image: '',
                 slug: ''
             },
-            tab: 2,
+            tab: null,
             tabs: [
                 {
                     title: 'Основная информация',
@@ -203,6 +203,7 @@ export default {
                     this.author = res.data.data;
                     this.$store.commit('changeHeaderText', 'Изменить автора: ' + this.author.full_name)
                     this.overlay = false;
+                    this.tab = 2;
                 })
                 .catch(res => {
                     this.$router.push('/admin/authors');

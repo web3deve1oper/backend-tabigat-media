@@ -282,7 +282,7 @@ export default {
             data: null,
             authors: [],
             article: {},
-            tab: 3,
+            tab: null,
             tabs: [
                 {
                     title: 'Основная информация',
@@ -405,6 +405,7 @@ export default {
                     this.article.staff = res.data.data.staff ?? [];
                     this.article.tags = res.data.data.tags.map(a => a.name);
                     this.overlay = false;
+                    this.tab = 3;
                 })
                 .catch(err => {
                     console.log(err)
