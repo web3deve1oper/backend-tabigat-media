@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const DEV = 'http://tabigat-media.test/';
-const remoteDEV = 'http://sabadoryo.com/';
+const remoteDEV = 'https://sabadoryo.com/';
 
 import store from '../store';
 import router from '../router';
