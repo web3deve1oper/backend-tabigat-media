@@ -54,11 +54,7 @@
             </v-tab-item>
             <v-tab-item>
                 <v-card>
-                    <vue-editor v-model="author.biography"
-                                useCustomImageHandler
-                                @image-added="handleImageAdded"
-                                id="contentEditor"
-                    ></vue-editor>
+                    <editor ref="editor" :content="author.biography"></editor>
                 </v-card>
             </v-tab-item>
         </v-tabs-items>
@@ -67,13 +63,13 @@
 
 <script>
 import CropImage from "../Reusable/CropImage";
-import {VueEditor} from "vue2-editor";
+import Editor from "../Reusable/Editor";
 
 export default {
     name: "CreateAuthor",
     components: {
         CropImage,
-        VueEditor
+        Editor
     },
     mounted() {
         this.$store.commit('changeHeaderText', 'Добавить автора')
@@ -113,28 +109,23 @@ export default {
         }
     },
     methods: {
-        handleImageAdded: function (file, Editor, cursorLocation, resetUploader) {
-            var formData = new FormData();
-            formData.append("file", file);
-
-            this.$http.post('/api/articles/upload-temp-image',
-                formData
-            )
-                .then(result => {
-                    const url = result.data.data.url; // Get url from response
-                    Editor.insertEmbed(cursorLocation, "image", url);
-                    resetUploader();
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        },
         saveAuthor() {
             var formData = new FormData();
 
             this.buildFormData(formData, this.author)
+
             if (this.$refs.cropper && this.$refs.cropper.croppedBlob) {
                 formData.append('preview_image', this.$refs.cropper.croppedBlob)
+            }
+
+            if (this.$refs.editor && CKEDITOR.instances.editor111.getData()) {
+                formData.append('content', CKEDITOR.instances.editor111.getData())
+            } else {
+                this.$store.commit('triggerSnack', {
+                    text: 'Заполните контент, хотя бы одним символом',
+                    color: 'orange'
+                })
+                return;
             }
 
             this.$http.post('/api/authors/create', formData)

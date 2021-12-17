@@ -16,6 +16,16 @@
         >
             Удалить отмеченные
         </v-btn>
+
+        <v-btn
+            depressed
+            color="success"
+            class="mt-2"
+            :loading="downloadLoader"
+            @click="downloadFeedbacks"
+        >
+            Скачать архив
+        </v-btn>
     </div>
 </template>
 
@@ -30,6 +40,7 @@ export default {
     },
     data() {
         return {
+            downloadLoader: false,
             headers:
                 [
                     {
@@ -82,6 +93,27 @@ export default {
                     this.$refs.feedbacks.loading = false;
                     this.$store.commit('triggerSnack', {text: 'Успешно удалено', color: 'success'})
                     this.$refs.feedbacks.getDataFromApi();
+                })
+        },
+        downloadFeedbacks() {
+            if (this.$refs.feedbacks === 0) return;
+
+            this.downloadLoader = true;
+
+            this.$http.get('/api/feedbacks/download', {responseType: 'arraybuffer'})
+                .then(response => {
+                    let blob = new Blob([response.data], { type: 'application/csv' })
+                    let link = document.createElement('a')
+                    link.href = window.URL.createObjectURL(blob)
+                    link.download = 'Отчет.xlsx'
+                    link.click()
+                    this.downloadLoader = false;
+                    this.$store.commit('triggerSnack', {text: 'Успех!', color: 'green'})
+                })
+                .catch(err => {
+                    this.downloadLoader = false;
+                    this.$store.commit('triggerSnack', {text: 'Ошибка', color: 'red'})
+                    console.log(err);
                 })
         }
     }

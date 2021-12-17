@@ -205,13 +205,11 @@
                 </v-tab-item>
                 <v-tab-item>
                     <v-card>
-                        <vue-editor
-                            v-model="article.content"
-                            useCustomImageHandler
-                            @image-added="handleImageAdded"
-                            id="contentEditor"
+                        <editor
+                            :content="article.content"
+                            ref="editor"
                         >
-                        </vue-editor>
+                        </editor>
                     </v-card>
                 </v-tab-item>
             </v-form>
@@ -259,7 +257,7 @@
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
 import CropImage from "../Reusable/CropImage";
-import {VueEditor} from "vue2-editor";
+import Editor from "../Reusable/Editor";
 
 
 export default {
@@ -267,7 +265,7 @@ export default {
     components: {
         VueCropper,
         CropImage,
-        VueEditor
+        Editor
     },
     mounted() {
         this.getAuthors()
@@ -358,6 +356,8 @@ export default {
 
             var formData = new FormData();
 
+            this.buildFormData(formData, this.article)
+
             if (this.$refs.cropperBig && this.$refs.cropperBig.croppedBlob) {
                 formData.append('preview_image_big', this.$refs.cropperBig.croppedBlob)
             }
@@ -365,7 +365,15 @@ export default {
                 formData.append('preview_image_small', this.$refs.cropperSmall.croppedBlob)
             }
 
-            this.buildFormData(formData, this.article)
+            if (this.$refs.editor && CKEDITOR.instances.editor111.getData()) {
+                formData.append('content', CKEDITOR.instances.editor111.getData())
+            } else {
+                this.$store.commit('triggerSnack', {
+                    text: 'Заполните контент, хотя бы одним символом',
+                    color: 'orange'
+                })
+                return;
+            }
 
             this.$http.post(`/api/articles/${this.article.id}/update`, formData)
                 .then(res => {

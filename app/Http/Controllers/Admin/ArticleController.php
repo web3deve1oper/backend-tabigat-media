@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\Article\DeleteArticlesRequest;
 use App\Http\Requests\Admin\Article\UpdateArticleRequest;
 use App\Models\Article;
 use App\Models\Tag;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,10 +16,14 @@ class ArticleController extends Controller
 {
     public function uploadTempImage(Request $request)
     {
-        $file = $request->file;
+        $file = $request->upload;
         $image = Storage::disk('public')->put("/images/", $file);
 
-        return $this->apiResponse(['url' => Storage::disk('public')->url($image)]);
+        return response()->json([
+            'url' => Storage::disk('public')->url($image),
+            'uploaded' => 1,
+            'filename' => $file->getClientOriginalName()
+        ]);
     }
 
 

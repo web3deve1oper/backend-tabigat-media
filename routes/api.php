@@ -95,6 +95,7 @@ Route::group(['prefix' => 'feedbacks'], function () {
     Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('', [\App\Http\Controllers\Api\FeedbackController::class, 'index']);
         Route::delete('', [\App\Http\Controllers\Admin\FeedbackController::class, 'delete']);
+        Route::get('download', [\App\Http\Controllers\Admin\FeedbackController::class, 'downloadFeedbacks']);
     });
 });
 

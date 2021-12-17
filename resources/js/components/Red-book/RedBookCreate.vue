@@ -230,11 +230,8 @@
                 </v-tab-item>
                 <v-tab-item>
                     <v-card>
-                        <vue-editor v-model="specie.content"
-                                    useCustomImageHandler
-                                    @image-added="handleImageAdded"
-                                    id="contentEditor"
-                        ></vue-editor>
+                        <editor ref="editor" :content="specie.content"
+                        ></editor>
                     </v-card>
                 </v-tab-item>
             </v-form>
@@ -245,14 +242,14 @@
 <script>
 import VueCropper from "vue-cropperjs";
 import CropImage from "../Reusable/CropImage";
-import {VueEditor} from "vue2-editor";
+import Editor from "../Reusable/Editor";
 
 export default {
     name: "RedBookCreate",
     components: {
         VueCropper,
         CropImage,
-        VueEditor
+        Editor
     },
     mounted() {
         this.$store.commit('changeHeaderText', 'Создать вид')
@@ -305,22 +302,6 @@ export default {
         addStatus() {
             this.specie.status.push('*Статус*')
         },
-        handleImageAdded: function (file, Editor, cursorLocation, resetUploader) {
-            var formData = new FormData();
-            formData.append("file", file);
-
-            this.$http.post('/api/articles/upload-temp-image',
-                formData
-            )
-                .then(result => {
-                    const url = result.data.data.url;
-                    Editor.insertEmbed(cursorLocation, "image", url);
-                    resetUploader();
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        },
         saveSpecie() {
             if (!this.$refs.form.validate()) {
                 return;
@@ -334,6 +315,16 @@ export default {
             }
             if (this.$refs.cropperSmall && this.$refs.cropperSmall.croppedBlob) {
                 formData.append('preview_image_small', this.$refs.cropperSmall.croppedBlob)
+            }
+
+            if (this.$refs.editor && CKEDITOR.instances.editor111.getData()) {
+                formData.append('content', CKEDITOR.instances.editor111.getData())
+            } else {
+                this.$store.commit('triggerSnack', {
+                    text: 'Заполните контент, хотя бы одним символом',
+                    color: 'orange'
+                })
+                return;
             }
 
             this.$http.post('/api/red-book/create', formData)

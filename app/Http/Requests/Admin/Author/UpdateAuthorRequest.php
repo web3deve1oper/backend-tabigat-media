@@ -28,7 +28,7 @@ class UpdateAuthorRequest extends FormRequest
             'id' => 'required|exists:authors,id',
             'full_name' => 'required',
             'biography' => 'required',
-            'slug' => 'required|unique:authors'
+            'slug' => 'required'
         ];
     }
 }

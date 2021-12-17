@@ -179,6 +179,7 @@
                                 key="big"
                                 :min-crop-box-height="400"
                                 :min-crop-box-width="1200"
+                                :dialog-max-width="1300"
                                 :aspect-ratio="3"
                                 label="Выберите картинку с большим размером"
                                 :rules="notEmptyRule"
@@ -203,11 +204,8 @@
                 </v-tab-item>
                 <v-tab-item>
                     <v-card>
-                        <vue-editor v-model="article.content"
-                                    useCustomImageHandler
-                                    @image-added="handleImageAdded"
-                                    id="contentEditor"
-                        ></vue-editor>
+                        <v-btn id="insert-table">Добавить таблицу</v-btn>
+                        <editor ref="editor" :content="article.content"></editor>
                     </v-card>
                 </v-tab-item>
             </v-form>
@@ -218,15 +216,14 @@
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
 import CropImage from "../Reusable/CropImage";
-import {VueEditor} from "vue2-editor";
-
+import Editor from "../Reusable/Editor";
 
 export default {
     name: "CreateArticle",
     components: {
         VueCropper,
         CropImage,
-        VueEditor
+        Editor,
     },
     mounted() {
         this.$store.commit('changeHeaderText', 'Создать статью')
@@ -253,7 +250,6 @@ export default {
                 read_time_value: '',
                 photography: '',
                 posted: false,
-                content: '',
                 preview_image: '',
                 is_long_read: false,
                 tags: []
@@ -284,7 +280,7 @@ export default {
             ],
             notEmptyRule: [
                 v => !!v || 'Обязательное поле',
-            ]
+            ],
         }
     },
     methods: {
@@ -307,22 +303,6 @@ export default {
         addStaff() {
             this.article.staff.push({title: 'Художник', full_name: 'Тестов Тест'})
         },
-        handleImageAdded: function (file, Editor, cursorLocation, resetUploader) {
-            var formData = new FormData();
-            formData.append("file", file);
-
-            this.$http.post('/api/articles/upload-temp-image',
-                formData
-            )
-                .then(result => {
-                    const url = result.data.data.url; // Get url from response
-                    Editor.insertEmbed(cursorLocation, "image", url);
-                    resetUploader();
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        },
         saveArticle() {
             if (!this.$refs.form.validate()) {
                 this.$store.commit('triggerSnack', {
@@ -340,6 +320,16 @@ export default {
             }
             if (this.$refs.cropperSmall && this.$refs.cropperSmall.croppedBlob) {
                 formData.append('preview_image_small', this.$refs.cropperSmall.croppedBlob)
+            }
+
+            if (this.$refs.editor && CKEDITOR.instances.editor111.getData()) {
+                formData.append('content', CKEDITOR.instances.editor111.getData())
+            } else {
+                this.$store.commit('triggerSnack', {
+                    text: 'Заполните контент, хотя бы одним символом',
+                    color: 'orange'
+                })
+                return;
             }
 
             this.$http.post('/api/articles/create', formData)

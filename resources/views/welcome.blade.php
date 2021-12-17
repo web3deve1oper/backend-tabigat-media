@@ -9,6 +9,9 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}">
+
+    <script src="https://cdn.ckeditor.com/4.17.1/full-all/ckeditor.js"></script>
+
     <!-- Styles -->
     <style>
         /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -403,7 +406,7 @@
 <div id="app">
         <App></App>
 </div>
-
 <script src="{{ asset('js/app.js') }}"></script>
+
 </body>
 </html>

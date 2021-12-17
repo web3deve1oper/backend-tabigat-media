@@ -28,6 +28,8 @@
     },
     "dependencies": {
         "@mdi/font": "^6.3.95",
+        "ckeditor4-vue": "^1.4.0",
+        "quill-better-table": "^1.2.10",
         "vue-axios": "^3.3.7",
         "vue-cropperjs": "^3.0.0",
         "vue-router": "^3.5.2",
