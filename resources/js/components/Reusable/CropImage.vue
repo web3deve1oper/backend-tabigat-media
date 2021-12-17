@@ -38,8 +38,9 @@
                             :minCropBoxWidth="minCropBoxWidth"
                             :minCropBoxHeight="minCropBoxHeight"
                             :aspectRatio="aspectRatio"
-                            :initialAspectRation="aspectRatio"
                             :background="true"
+                            :minCanvasWidth="1200"
+                            :minCanvasHeight="400"
                             :src="imgSrc"
                             :modal="true"
                             :center="false"
@@ -75,8 +76,8 @@ export default {
         maxHeight: {default: 400},
         // the URL of the blob image
         objectUrl: {default: ""},
-        minCropBoxWidth: {default: 600},
-        minCropBoxHeight: {default: 200},
+        minCropBoxWidth: {default: 1200},
+        minCropBoxHeight: {default: 400},
         aspectRatio: {default: 3},
         rules: Array,
         label: {
@@ -139,19 +140,22 @@ export default {
         cropImage() {
             // get image data for post processing, e.g. upload or setting image src
             this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL()
+            console.log(this.cropImg)
             this.$refs.cropper
                 .getCroppedCanvas({
-                    maxWidth: this.maxWidth,
-                    maxHeight: this.maxHeight
+                    imageSmoothingEnabled: true,
+                    imageSmoothingQuality: 'high',
                 })
                 .toBlob(
                     blob => {
                         this.cropImg = URL.createObjectURL(blob);
                         this.croppedBlob = blob;
                         this.$emit("update:objectUrl", this.cropImg);
+
+                        console.log(this.cropImg)
                     },
                     "image/jpeg",
-                    0.95
+                    1
                 );
             this.dialog = false;
         },

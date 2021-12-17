@@ -20,6 +20,8 @@ import Feedbacks from "./components/Feedback/Feedbacks";
 import Mailing from "./components/Mailing/Mailing";
 import SubmitMailing from "./components/Mailing/SubmitMailing";
 import DailyArticle from "./components/Article/DailyArticle";
+import Audits from "./components/Audit/Audits";
+import Audit from "./components/Audit/Audit";
 
 Vue.use(VueRouter);
 
@@ -160,6 +162,22 @@ const router = new VueRouter({
                 middleware: [auth],
             }
 
+        },
+        {
+            path: '/admin/audits',
+            name: 'audits',
+            component: Audits,
+            meta: {
+                middleware: [auth],
+            }
+        },
+        {
+            path: '/admin/audits/:id',
+            name: 'audit',
+            component: Audit,
+            meta: {
+                middleware: [auth],
+            }
         },
         {path: "*", component: PageNotFound}
 

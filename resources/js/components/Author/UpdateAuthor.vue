@@ -165,7 +165,7 @@ export default {
             }
 
             if (this.$refs.editor && CKEDITOR.instances.editor111.getData()) {
-                formData.append('content', CKEDITOR.instances.editor111.getData())
+                formData.append('biography', CKEDITOR.instances.editor111.getData())
             } else {
                 this.$store.commit('triggerSnack', {
                     text: 'Заполните контент, хотя бы одним символом',

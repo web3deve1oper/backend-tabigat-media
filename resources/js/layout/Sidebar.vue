@@ -46,7 +46,8 @@ export default {
                 {title: 'Красная книга', icon: 'mdi-notebook-edit', route: 'red-book'},
                 {title: 'Авторы', icon: 'mdi-human-edit', route: 'authors'},
                 {title: 'Обратная связь', icon: 'mdi-cellphone-link', route: 'feedbacks'},
-                {title: 'Рассылка', icon: 'mdi-email', route: 'mailings'}
+                {title: 'Рассылка', icon: 'mdi-email', route: 'mailings'},
+                {title: 'Аудит', icon: 'mdi-code-braces', route: 'audits'}
             ]
         }
     },

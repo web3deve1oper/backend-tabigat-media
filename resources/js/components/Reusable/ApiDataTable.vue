@@ -79,8 +79,11 @@
 
                         <v-tooltip bottom v-if="header.type==='text'">
                             <template v-slot:activator="{ on, attrs }">
-                                <span v-on="on" v-bind="attrs" class="text-cut">
+                                <span v-on="on" v-bind="attrs" class="text-cut" v-if="!header.translation">
                                     {{ txt(it, header.value) }}
+                                </span>
+                                <span v-else>
+                                    {{translation(txt(it,header.value))}}
                                 </span>
                             </template>
                             <span>{{txt(it,header.value)}}</span>
@@ -121,7 +124,16 @@ export default {
             options: {},
             totalItems: 0,
             parentName: '',
-            selected: []
+            selected: [],
+            translations: {
+              "App\\Models\\Article" : "Артикль",
+              "App\\Models\\Author" : "Автор",
+              "App\\Models\\Rubric" : "Рубрика",
+              "App\\Models\\RedBook" : "Красная книга",
+              "created" : 'создан',
+              "updated" : 'изменен',
+              "deleted" : "удален"
+            }
         }
     },
     watch: {
@@ -133,6 +145,9 @@ export default {
         }
     },
     methods: {
+        translation(value) {
+          return this.translations[value] ? this.translations[value] : value;
+        },
         getDataFromApi(search) {
             this.loading = true;
             this.apiCall(search)

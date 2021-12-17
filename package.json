@@ -31,6 +31,7 @@
         "ckeditor4-vue": "^1.4.0",
         "quill-better-table": "^1.2.10",
         "vue-axios": "^3.3.7",
+        "vue-code-diff": "^1.2.0",
         "vue-cropperjs": "^3.0.0",
         "vue-router": "^3.5.2",
         "vue2-editor": "^2.10.3",

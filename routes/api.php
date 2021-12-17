@@ -109,3 +109,7 @@ Route::group(['prefix' => 'mailings'], function () {
     });
 });
 
+Route::group(['prefix' => 'audits'], function () {
+    Route::get('', [\App\Http\Controllers\Admin\AuditController::class, 'index']);
+    Route::get('{audit}', [\App\Http\Controllers\Admin\AuditController::class, 'edit']);
+});
