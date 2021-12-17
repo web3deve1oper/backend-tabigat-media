@@ -67,6 +67,13 @@ export default {
                     type: 'text',
                     sortable:false,
                     translation: true
+                },
+                {
+                    text: 'Дата изменения',
+                    value: 'created_at',
+                    type: 'text',
+                    sortable:false,
+                    translation: true
                 }
             ],
             apiIncludes: '',
