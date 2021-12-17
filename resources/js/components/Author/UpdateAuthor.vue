@@ -131,7 +131,7 @@ export default {
                 preview_image: '',
                 slug: ''
             },
-            tab: null,
+            tab: 2,
             tabs: [
                 {
                     title: 'Основная информация',

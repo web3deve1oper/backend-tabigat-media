@@ -257,7 +257,7 @@ export default {
     data() {
         return {
             validForm: true,
-            tab: null,
+            tab: 3,
             specie: {
                 facts: [],
                 status: []

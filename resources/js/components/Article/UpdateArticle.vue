@@ -282,7 +282,7 @@ export default {
             data: null,
             authors: [],
             article: {},
-            tab: null,
+            tab: 3,
             tabs: [
                 {
                     title: 'Основная информация',
