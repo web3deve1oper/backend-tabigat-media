@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
@@ -45,6 +46,11 @@ class Article extends Model implements Auditable
         'is_favourite' => 'boolean'
     ];
 
+    protected $auditExclude = [
+        'views',
+        'updated_at'
+    ];
+
     public function author()
     {
         return $this->belongsTo(Author::class);
@@ -82,13 +88,12 @@ class Article extends Model implements Auditable
         return $this->belongsToMany(Tag::class);
     }
 
-    public function scopeRecommendedArticles(Builder $query)
+    public function scopeRecommendedArticles(Builder $query, $tags)
     {
-        $query->whereHas('tags', function ($q) {
-            $relatedTags = $this->tags()->get();
-            foreach ($relatedTags as $tag) {
-                $q->orWhere('name', $tag->name);
-            }
+        $names = array_column($tags->toArray(),'name');
+
+        $query->whereHas('tags', function ($q) use ($names){
+                $q->whereIn('name', $names);
         });
     }
 }

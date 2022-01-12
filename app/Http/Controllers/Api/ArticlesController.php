@@ -94,12 +94,14 @@ class ArticlesController extends Controller
                 AllowedInclude::relationship('author'),
                 AllowedInclude::relationship('rubric'),
             ])
-            ->recommendedArticles()
+            ->recommendedArticles($article->tags)
             ->limit(\request('itemsPerPage') ?? 15)
             ->where('id', '!=', $article->id)
             ->get();
 
-
+        if (count($articles) === 0) {
+            return $this->getRandomArticles();
+        }
         return $this->apiResponse($articles);
     }
 
@@ -124,5 +126,15 @@ class ArticlesController extends Controller
         }
 
         return $this->apiResponse($article);
+    }
+
+    public function visited(Article $article)
+    {
+        Article::disableAuditing();
+
+        $article->increment('views',1);
+        $article->save();
+
+        return $this->apiResponse(null);
     }
 }

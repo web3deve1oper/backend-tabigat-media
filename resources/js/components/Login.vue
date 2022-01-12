@@ -43,6 +43,7 @@ export default {
                         email: this.loginEmail,
                         password: this.loginPassword
                     }).then(res => {
+                        console.log(res)
                         localStorage.setItem('auth-token', res.data.data.token)
                         this.$store.commit('setAuth', true)
                         this.$router.push('/admin/about')

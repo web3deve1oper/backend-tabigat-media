@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Hash;
 
 class CreateUserCommand extends Command
 {
@@ -41,11 +42,13 @@ class CreateUserCommand extends Command
         $email = $this->argument('email');
         $password = $this->argument('password');
 
-        User::create([
+        $user = User::create([
             'name' => 'admin',
             'email' => $email,
-            'password' => bcrypt($password)
+            'password' => $password
         ]);
+
+        $user->createToken('auth-token',['ultra-admin-actions']);
 
         $this->info('User created');
 

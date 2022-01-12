@@ -39,6 +39,8 @@ Route::group(['prefix' => 'articles'], function () {
     Route::get('{article}/recommended-articles',
         [\App\Http\Controllers\Api\ArticlesController::class, 'getRecommendedArticles']);
 
+    Route::post('{article}/visited', [\App\Http\Controllers\Api\ArticlesController::class, 'visited']);
+
     Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('upload-temp-image', [\App\Http\Controllers\Admin\ArticleController::class, 'uploadTempImage']);
         Route::post('create', [\App\Http\Controllers\Admin\ArticleController::class, 'create']);
@@ -112,4 +114,11 @@ Route::group(['prefix' => 'mailings'], function () {
 Route::group(['prefix' => 'audits'], function () {
     Route::get('', [\App\Http\Controllers\Admin\AuditController::class, 'index']);
     Route::get('{audit}', [\App\Http\Controllers\Admin\AuditController::class, 'edit']);
+});
+
+Route::group(['prefix' => 'users', 'middleware' => ['auth:sanctum', 'scopes:admin-actions']], function() {
+    Route::get('', [\App\Http\Controllers\Api\UsersController::class, 'index']);
+    Route::post('', [\App\Http\Controllers\AuthController::class, 'register'])->middleware('scopes:ultra-admin-actions');
+    Route::get('{user}', [\App\Http\Controllers\Api\UsersController::class, 'edit']);
+    Route::post('{user}', [\App\Http\Controllers\AuthController::class, 'update'])->middleware('scopes:ultra-admin-actions');
 });

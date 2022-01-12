@@ -22,6 +22,9 @@ import SubmitMailing from "./components/Mailing/SubmitMailing";
 import DailyArticle from "./components/Article/DailyArticle";
 import Audits from "./components/Audit/Audits";
 import Audit from "./components/Audit/Audit";
+import Users from "./components/Users/Users";
+import CreateUser from "./components/Users/CreateUser";
+import User from "./components/Users/User";
 
 Vue.use(VueRouter);
 
@@ -175,6 +178,30 @@ const router = new VueRouter({
             path: '/admin/audits/:id',
             name: 'audit',
             component: Audit,
+            meta: {
+                middleware: [auth],
+            }
+        },
+        {
+            path: '/admin/users',
+            name: 'users',
+            component: Users,
+            meta: {
+                middleware: [auth],
+            }
+        },
+        {
+            path: '/admin/create-user',
+            name: 'create-user',
+            component: CreateUser,
+            meta: {
+                middleware: [auth],
+            }
+        },
+        {
+            path: '/admin/users/:id',
+            name: 'user',
+            component: User,
             meta: {
                 middleware: [auth],
             }

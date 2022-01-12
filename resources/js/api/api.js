@@ -10,7 +10,7 @@ import router from '../router';
  @TODO change before deploying
 */
 let instance = axios.create({
-    baseURL : remoteDEV
+    baseURL : DEV
 });
 
 instance.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
