@@ -2,6 +2,7 @@ import axios from "axios";
 
 const DEV = 'http://tabigat-media.test/';
 const remoteDEV = 'https://sabadoryo.com/';
+const prod = 'https://backend.tabigat.media/';
 
 import store from '../store';
 import router from '../router';
@@ -10,7 +11,7 @@ import router from '../router';
  @TODO change before deploying
 */
 let instance = axios.create({
-    baseURL : DEV
+    baseURL : prod
 });
 
 instance.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
