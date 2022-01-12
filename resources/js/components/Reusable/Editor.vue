@@ -1,6 +1,6 @@
 <template>
 <!--    <ckeditor v-model="editorData" :config="editorConfig" @namespaceloaded="onNamespaceLoaded"></ckeditor>-->
-    <textarea name="editor111"></textarea>
+    <textarea :name="uniqueId"></textarea>
 </template>
 
 <script>
@@ -8,14 +8,17 @@ export default {
     name: "Editor",
     props: {
         content: '',
+        uniqueId: {
+            default: 'editor111'
+        }
     },
     mounted() {
         CKEDITOR.config.language = 'ru'
         CKEDITOR.config.height = '500px'
         CKEDITOR.config.extraPlugins = 'uploadimage'
         CKEDITOR.config.imageUploadUrl = '/api/articles/upload-temp-image'
-        CKEDITOR.replace( 'editor111' );
-        CKEDITOR.instances.editor111.setData(this.content)
+        CKEDITOR.replace( this.uniqueId );
+        CKEDITOR.instances[this.uniqueId].setData(this.content)
     }
 }
 </script>

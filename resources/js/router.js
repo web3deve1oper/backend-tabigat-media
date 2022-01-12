@@ -25,6 +25,7 @@ import Audit from "./components/Audit/Audit";
 import Users from "./components/Users/Users";
 import CreateUser from "./components/Users/CreateUser";
 import User from "./components/Users/User";
+import Pages from "./components/Settings/Pages";
 
 Vue.use(VueRouter);
 
@@ -205,6 +206,14 @@ const router = new VueRouter({
             meta: {
                 middleware: [auth],
             }
+        },
+        {
+          path: '/admin/page-settings',
+          name: 'page-settings',
+          component: Pages,
+          meta: {
+              middleware: [auth]
+          }
         },
         {path: "*", component: PageNotFound}
 

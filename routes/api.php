@@ -116,9 +116,19 @@ Route::group(['prefix' => 'audits'], function () {
     Route::get('{audit}', [\App\Http\Controllers\Admin\AuditController::class, 'edit']);
 });
 
-Route::group(['prefix' => 'users', 'middleware' => ['auth:sanctum', 'scopes:admin-actions']], function() {
+Route::group(['prefix' => 'users', 'middleware' => ['auth:sanctum', 'scopes:admin-actions']], function () {
     Route::get('', [\App\Http\Controllers\Api\UsersController::class, 'index']);
-    Route::post('', [\App\Http\Controllers\AuthController::class, 'register'])->middleware('scopes:ultra-admin-actions');
+    Route::post('',
+        [\App\Http\Controllers\AuthController::class, 'register'])->middleware('scopes:ultra-admin-actions');
     Route::get('{user}', [\App\Http\Controllers\Api\UsersController::class, 'edit']);
-    Route::post('{user}', [\App\Http\Controllers\AuthController::class, 'update'])->middleware('scopes:ultra-admin-actions');
+    Route::post('{user}',
+        [\App\Http\Controllers\AuthController::class, 'update'])->middleware('scopes:ultra-admin-actions');
+});
+
+Route::group(['prefix' => 'page-settings'], function () {
+    Route::get('', [\App\Http\Controllers\Api\PageSettingsController::class, 'index']);
+
+    Route::group(['middleware' => ['auth:sanctum', 'scopes:admin-actions']], function () {
+        Route::post('', [\App\Http\Controllers\Admin\PageSettingsController::class, 'store']);
+    });
 });

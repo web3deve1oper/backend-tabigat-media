@@ -18,6 +18,9 @@ Route::get('',function() {
 });
 
 Route::group(['prefix' => 'admin'], function () {
+    Route::get('', function() {
+       return redirect('/admin/login');
+    });
 
     Route::get('{any}', function () {
         return view('welcome');

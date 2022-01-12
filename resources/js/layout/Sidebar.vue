@@ -48,7 +48,8 @@ export default {
                 {title: 'Обратная связь', icon: 'mdi-cellphone-link', route: 'feedbacks'},
                 {title: 'Рассылка', icon: 'mdi-email', route: 'mailings'},
                 {title: 'Аудит', icon: 'mdi-code-braces', route: 'audits'},
-                {title: 'Пользователи', icon: 'mdi-account-group', route: 'users'}
+                {title: 'Пользователи', icon: 'mdi-account-group', route: 'users'},
+                {title: 'Редактирование страниц сайта', icon: 'mdi-file-document-multiple', route: 'page-settings'}
             ]
         }
     },
