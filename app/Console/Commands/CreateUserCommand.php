@@ -48,7 +48,7 @@ class CreateUserCommand extends Command
             'password' => $password
         ]);
 
-        $user->createToken('auth-token',['ultra-admin-actions']);
+        $user->createToken('auth-token',['ultra-admin-actions', 'admin-actions']);
 
         $this->info('User created');
 
