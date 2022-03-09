@@ -32,12 +32,12 @@
                     <editor ref="pagesAbout" :content="pages.about" uniqueId="pagesAbout"></editor>
                 </v-card>
             </v-tab-item>
-            <v-tab-item>
+            <v-tab-item :eager="true">
                 <v-card>
                     <editor ref="pagesConfidentialityPolicy" :content="pages.confidentiality_policy" uniqueId="pagesConfidentialityPolicy"></editor>
                 </v-card>
             </v-tab-item>
-            <v-tab-item>
+            <v-tab-item :eager="true">
                 <v-card>
                     <editor ref="pagesLegalInformation" :content="pages.legal_information" uniqueId="pagesLegalInformation"></editor>
                 </v-card>
