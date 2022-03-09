@@ -6,7 +6,7 @@
             <v-banner>После того как вы внесли все изменения, пожалуйста сохраните их</v-banner>
             <v-spacer></v-spacer>
 
-            <v-btn color="primary" @click="saveArticle">
+            <v-btn color="primary" @click="saveArticle" :loading="btnLoading">
                 Сохранить
             </v-btn>
 
@@ -281,6 +281,7 @@ export default {
             notEmptyRule: [
                 v => !!v || 'Обязательное поле',
             ],
+            btnLoading: false
         }
     },
     methods: {
@@ -304,6 +305,7 @@ export default {
             this.article.staff.push({title: 'Художник', full_name: 'Тестов Тест'})
         },
         saveArticle() {
+            this.btnLoading = true;
             if (!this.$refs.form.validate()) {
                 this.$store.commit('triggerSnack', {
                     text: 'Перепроверьте данные, некоторые поля пустые',
@@ -335,6 +337,7 @@ export default {
             this.$http.post('/api/articles/create', formData)
                 .then(res => {
                     this.$store.commit('triggerSnack', {text: 'Статья создана', color: 'green'})
+                    this.btnLoading = false;
                     this.$router.push({name: 'update-article', params: {id: res.data.data.id}});
                 })
                 .catch(err => {
@@ -343,6 +346,7 @@ export default {
                     } else {
                         this.$store.commit('triggerSnack', {text: 'Ошибка, перезагрузите страницу', color: 'red'})
                     }
+                    this.btnLoading = false;
                 })
         },
         buildFormData(formData, data, parentKey) {

@@ -23,7 +23,8 @@
                         v-bind="attrs"
                         v-on="on"
                         :src="cropSrc"
-                        style="border: 1px solid gray"
+                        
+                        style="border: 1px solid gray; max-width:600px"
                         alt="Cropped Image"
                     />
                     <v-banner v-show="cropSrc" single-line>
