@@ -19,11 +19,12 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]);
 
-        if (!Auth::attempt($attr)) {
-            return $this->apiResponse(null,401,'Данная пара email|пароль не действительна');
-        }
+//        if (!Auth::attempt($attr)) {
+//            return $this->apiResponse(null,401,'Данная пара email|пароль не действительна');
+//        }
 
-        return $this->apiResponse(['token' => auth()->user()->tokens()->first()], 200);
+//        return $this->apiResponse(['token' => auth()->user()->tokens()->first()], 200);
+        return $this->apiResponse(['token' => auth()->user()], 200);
     }
 
     public function checkToken()
@@ -52,5 +53,12 @@ class AuthController extends Controller
         );
 
         return $this->apiResponse($user);
+    }
+
+    public function delete(User $user)
+    {
+        $user->delete();
+
+        return $this->apiResponse(null);
     }
 }

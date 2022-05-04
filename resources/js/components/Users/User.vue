@@ -31,6 +31,12 @@
         <v-btn class="primary" @click="saveUser" :loading="loading">
             Сохранить
         </v-btn>
+        <v-btn
+                color="red mr-3"
+                @click="deleteUser"
+        >
+            Удалить
+        </v-btn>
     </v-card>
 </template>
 
@@ -77,6 +83,18 @@ export default {
                 this.$store.commit('triggerSnack', {color: 'red', text: err.response.data.errors[Object.keys(err.response.data.errors)[0]][0]});
                 this.loading = false;
             })
+        },
+        deleteUser() {
+            this.overlay = true;
+
+            this.$http.delete(`/api/users/${this.user.id}`)
+                .then(res => {
+                    this.$router.push('/admin/users')
+                    this.$store.commit('triggerSnack', {text: 'Пользователь удален', color: 'green'})
+                })
+                .catch(res => {
+                    this.$store.commit('changeHeaderText', 'Ошибка, перезагрузите страницу')
+                })
         }
     }
 }

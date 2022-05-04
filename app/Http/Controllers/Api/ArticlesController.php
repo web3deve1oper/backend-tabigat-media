@@ -73,7 +73,6 @@ class ArticlesController extends Controller
             ])
             ->limit(request('itemsPerPage') ?? 8)
             ->get();
-
         return $this->apiResponse($articles);
     }
 
@@ -100,7 +99,7 @@ class ArticlesController extends Controller
             ->get();
 
         if (count($articles) === 0) {
-            return $this->getRandomArticles();
+            return [];
         }
         return $this->apiResponse($articles);
     }

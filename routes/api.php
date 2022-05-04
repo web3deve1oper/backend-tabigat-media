@@ -119,10 +119,12 @@ Route::group(['prefix' => 'audits'], function () {
 Route::group(['prefix' => 'users', 'middleware' => ['auth:sanctum', 'scopes:admin-actions']], function () {
     Route::get('', [\App\Http\Controllers\Api\UsersController::class, 'index']);
     Route::post('',
-        [\App\Http\Controllers\AuthController::class, 'register'])->middleware('scopes:ultra-admin-actions');
+        [\App\Http\Controllers\AuthController::class, 'register']);
     Route::get('{user}', [\App\Http\Controllers\Api\UsersController::class, 'edit']);
     Route::post('{user}',
         [\App\Http\Controllers\AuthController::class, 'update'])->middleware('scopes:ultra-admin-actions');
+    Route::delete('{user}',
+        [\App\Http\Controllers\AuthController::class, 'delete'])->middleware('scopes:ultra-admin-actions');
 });
 
 Route::group(['prefix' => 'page-settings'], function () {
