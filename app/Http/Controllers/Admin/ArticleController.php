@@ -35,7 +35,8 @@ class ArticleController extends Controller
 
         if (isset($article['preview_image_big'])) {
             $file = $request->file('preview_image_big');
-            $image = Storage::disk('public')->put("/article_preview/", $file);
+            $fileName = $file->getClientOriginalName();
+            $image = Storage::disk('public')->put("/article_preview/", $fileName);
             $article['preview_image_big_url'] = Storage::disk('public')->url($image);
 
             unset($article['preview_image_big']);
@@ -43,7 +44,8 @@ class ArticleController extends Controller
 
         if (isset($article['preview_image_small'])) {
             $file = $request->file('preview_image_small');
-            $image = Storage::disk('public')->put("/article_preview/", $file);
+            $fileName = $file->getClientOriginalName();
+            $image = Storage::disk('public')->put("/article_preview/", $fileName);
             $article['preview_image_small_url'] = Storage::disk('public')->url($image);
 
             unset($article['preview_small_big']);
@@ -79,7 +81,8 @@ class ArticleController extends Controller
 
         if (isset($art['preview_image_big'])) {
             $file = $request->file('preview_image_big');
-            $image = Storage::disk('public')->put("/article_preview/", $file);
+            $fileName = $file->getClientOriginalName();
+            $image = Storage::disk('public')->put("/article_preview/", $fileName);
             $article['preview_image_big_url'] = Storage::disk('public')->url($image);
 
             unset($art['preview_image_big']);
@@ -87,7 +90,8 @@ class ArticleController extends Controller
 
         if (isset($art['preview_image_small'])) {
             $file = $request->file('preview_image_small');
-            $image = Storage::disk('public')->put("/article_preview/", $file);
+            $fileName = $file->getClientOriginalName();
+            $image = Storage::disk('public')->put("/article_preview/", $fileName);
             $article['preview_image_small_url'] = Storage::disk('public')->url($image);
 
             unset($art['preview_image_small']);

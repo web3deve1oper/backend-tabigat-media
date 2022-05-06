@@ -17,7 +17,8 @@ class AuthorController extends Controller
 
         if (isset($author['preview_image'])) {
             $file = $request->file('preview_image');
-            $image = Storage::disk('public')->put("/article_preview/", $file);
+            $fileName = $file->getClientOriginalName();
+            $image = Storage::disk('public')->put("/article_preview/", $fileName);
             $author['preview_image_url'] = Storage::disk('public')->url($image);
 
             unset($author['preview_image']);
@@ -34,7 +35,8 @@ class AuthorController extends Controller
 
         if (isset($updatedAuthor['preview_image'])) {
             $file = $request->file('preview_image');
-            $image = Storage::disk('public')->put("/article_preview/", $file);
+            $fileName = $file->getClientOriginalName();
+            $image = Storage::disk('public')->put("/article_preview/", $fileName);
             $updatedAuthor['preview_image_url'] = Storage::disk('public')->url($image);
 
             unset($updatedAuthor['preview_image']);

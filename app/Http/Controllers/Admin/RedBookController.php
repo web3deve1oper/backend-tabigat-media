@@ -17,7 +17,8 @@ class RedBookController extends Controller
 
         if (isset($specie['preview_image_big'])) {
             $file = $request->file('preview_image_big');
-            $image = Storage::disk('public')->put("/red-book-preview/", $file);
+            $fileName = $file->getClientOriginalName();
+            $image = Storage::disk('public')->put("/red-book-preview/", $fileName);
             $specie['preview_image_big_url'] = Storage::disk('public')->url($image);
 
             unset($specie['preview_image_big']);
@@ -25,7 +26,8 @@ class RedBookController extends Controller
 
         if (isset($specie['preview_image_small'])) {
             $file = $request->file('preview_image_small');
-            $image = Storage::disk('public')->put("/red-book-preview/", $file);
+            $fileName = $file->getClientOriginalName();
+            $image = Storage::disk('public')->put("/red-book-preview/", $fileName);
             $specie['preview_image_small_url'] = Storage::disk('public')->url($image);
 
             unset($specie['preview_image_small']);
@@ -43,14 +45,16 @@ class RedBookController extends Controller
 
         if (isset($updatedSpecie['preview_image_small'])) {
             $file = $request->file('preview_image_small');
-            $image = Storage::disk('public')->put("/article_preview/", $file);
+            $fileName = $file->getClientOriginalName();
+            $image = Storage::disk('public')->put("/article_preview/", $fileName);
             $updatedSpecie['preview_image_small_url'] = Storage::disk('public')->url($image);
             unset($updatedSpecie['preview_image_small']);
         }
 
         if (isset($updatedSpecie['preview_image_big'])) {
             $file = $request->file('preview_image_big');
-            $image = Storage::disk('public')->put("/article_preview/", $file);
+            $fileName = $file->getClientOriginalName();
+            $image = Storage::disk('public')->put("/article_preview/", $fileName);
             $updatedSpecie['preview_image_big_url'] = Storage::disk('public')->url($image);
             unset($updatedSpecie['preview_image_big']);
         }

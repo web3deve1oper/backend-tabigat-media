@@ -23,7 +23,7 @@
                         v-bind="attrs"
                         v-on="on"
                         :src="cropSrc"
-                        
+
                         style="border: 1px solid gray; max-width:600px"
                         alt="Cropped Image"
                     />
@@ -141,7 +141,7 @@ export default {
         cropImage() {
             // get image data for post processing, e.g. upload or setting image src
             this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL()
-            console.log(this.cropImg)
+            console.log(this.cropImg);
             this.$refs.cropper
                 .getCroppedCanvas({
                     imageSmoothingEnabled: true,

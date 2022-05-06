@@ -161,7 +161,7 @@ export default {
 
             this.buildFormData(formData, this.author)
             if (this.$refs.cropper && this.$refs.cropper.croppedBlob) {
-                formData.append('preview_image', this.$refs.cropper.croppedBlob)
+                formData.append('preview_image', this.$refs.cropper.croppedBlob);
             }
 
             if (this.$refs.editor && CKEDITOR.instances.editor111.getData()) {
@@ -177,10 +177,10 @@ export default {
             this.$http.post(`/api/authors/${this.author.id}/update`, formData)
                 .then(res => {
                     this.overlay = false;
-                    this.$store.commit('triggerSnack', {text: 'Автор изменен', color: 'green'})
+                    this.$store.commit('triggerSnack', {text: 'Автор изменен', color: 'green'});
                 })
                 .catch(err => {
-                    this.$store.commit('triggerSnack', {text: 'Обновите страницу', color: 'red'})
+                    this.$store.commit('triggerSnack', {text: 'Обновите страницу', color: 'red'});
                     console.log(err)
                 })
         },
